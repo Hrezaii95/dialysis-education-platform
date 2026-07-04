@@ -1,3 +1,13 @@
+# Dialysis education platform
+
+Interactive HDF training for healthcare professionals — circuit simulation, machine setup, branching patient cases, alarms, and credentialing. English + Persian (RTL).
+
+**Live demo:** https://hrezaii95.github.io/dialysis-education-platform/
+
+Every push to `main` auto-deploys to GitHub Pages via Actions.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

@@ -1,0 +1,418 @@
+{
+  "publisher": "Raouf Academy",
+  "title": "Fresenius Dialysis & High-Volume HDF \u2014 Interactive Training Flipbook",
+  "subtitle": "Clinical evidence, device technology, and bedside implementation for healthcare professionals",
+  "version": "1.0.0",
+  "aspect_ratio": "16:9",
+  "style_preset": "raouf-clinical",
+  "style_notes": "Raouf Academy medical education illustration. Elegant teal-and-gold academy branding badge bottom-left on every page reading 'Raouf Academy'. Fresenius clinical textbook diagram style. Label all components as readable text within the image. Educational, not graphic. Ground in FME HVHDF handbook and 5008 IFU.",
+  "brand": {
+    "name": "Raouf Academy",
+    "company": "Raouf Manufacturing and Trading Company",
+    "logo": "assets/raouf-logo.jpg",
+    "primary_color": "#1d3a88",
+    "accent_color": "#3b6fd4",
+    "badge_position": "bottom-right",
+    "badge_style": "white pill with Raouf company logo and Academy text",
+    "prompt_suffix": "Include Raouf Academy branding with corporate blue #1d3a88 color scheme and small Raouf logo badge."
+  },
+  "modules": [
+    {
+      "id": "m1",
+      "title": "HDF Clinical Foundation",
+      "description": "Why hemodiafiltration surpasses conventional HD \u2014 mechanisms and evidence",
+      "pages": [
+        {
+          "id": "m1-p1",
+          "title": "HDF vs HD \u2014 The Clearance Revolution",
+          "objective": "Compare diffusive HD with convective-diffusive HDF at a glance",
+          "seed_query": "Raouf Academy medical education \u2014 side-by-side comparison diagram of hemodialysis vs hemodiafiltration: left panel shows diffusive clearance across dialyzer membrane, right panel shows diffusion plus convection arrows with substitution fluid, labeled components, clinical textbook style 16:9, elegant Raouf Academy badge bottom-left teal and gold",
+          "tap_targets": [
+            "dialyzer membrane on HDF side",
+            "substitution fluid bag"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "05-hdf-vs-hd-deep.md",
+            "external-hvhdf-fresenius.md"
+          ]
+        },
+        {
+          "id": "m1-p2",
+          "title": "Middle Molecules & Uremic Toxins",
+          "objective": "Explain why \u03b22-microglobulin and middle molecules drive HDF benefit",
+          "seed_query": "Raouf Academy \u2014 illustrated molecular weight spectrum of uremic toxins: small molecules (urea), middle molecules (beta-2 microglobulin, myoglobin), protein-bound solutes, with clearance bars comparing HD vs HDF, clinical infographic 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "beta-2 microglobulin molecule",
+            "clearance bar chart"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "05-hdf-vs-hd-deep.md"
+          ]
+        },
+        {
+          "id": "m1-p3",
+          "title": "CONVINCE Trial \u2014 Evidence at Scale",
+          "objective": "Summarize CONVINCE RCT mortality findings and dose achieved",
+          "seed_query": "Raouf Academy \u2014 clean medical infographic of CONVINCE trial results: 1360 patients, HDF vs high-flux HD, all-cause mortality 17.3% vs 21.9%, HR 0.77, mean convection 25.3 L per session, European map icons, textbook style 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "mortality comparison chart",
+            "convection volume number"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "external-hvhdf-fresenius.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m2",
+      "title": "Post-Dilution HVHDF Technology",
+      "description": "Blood circuit, fluid paths, and membrane science on Fresenius systems",
+      "pages": [
+        {
+          "id": "m2-p1",
+          "title": "5008 Blood Circuit \u2014 HVHDF Overview",
+          "objective": "Orient learner to full extracorporeal circuit in post-dilution mode",
+          "seed_query": "Raouf Academy \u2014 post-dilution high-volume hemodiafiltration on Fresenius 5008: illustrated blood circuit diagram showing arterial line, blood pump, dialyzer, post-dilution substitution fluid port, venous drip chamber, operator touchscreen, all labeled, clinical textbook 16:9, Raouf Academy badge bottom-left teal gold",
+          "tap_targets": [
+            "dialyzer membrane cartridge",
+            "substitution fluid connection",
+            "Fresenius 5008 operator monitor"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "06-fresenius-device-matrix.md",
+            "digest-2341351-fme-hvhdf-handbook-arep-fin2-fs.md"
+          ]
+        },
+        {
+          "id": "m2-p2",
+          "title": "Dialyzer Membrane Cross-Section",
+          "objective": "Show diffusive and convective transport at fiber level",
+          "seed_query": "Raouf Academy \u2014 cross-section illustration of hemodiafiltration dialyzer membrane: hollow fibers, blood compartment, dialysate compartment, ultrafiltration arrows, pore sizes for middle molecule passage, labeled educational diagram 16:9, Raouf Academy badge bottom-left",
+          "parent_page": "m2-p1",
+          "tap_from": "dialyzer membrane cartridge",
+          "status": "generated",
+          "kb_refs": [
+            "05-hdf-vs-hd-deep.md"
+          ]
+        },
+        {
+          "id": "m2-p3",
+          "title": "Post-Dilution Substitution Fluid Path",
+          "objective": "Trace replacement fluid from ONLINE system to venous return",
+          "seed_query": "Raouf Academy \u2014 post-dilution substitution fluid path diagram: ultrapure dialysate through ONLINE pump to substitution port after dialyzer in venous blood line, arrows showing fluid direction, Fresenius 5008 context, labeled clinical illustration 16:9, Raouf Academy badge bottom-left",
+          "parent_page": "m2-p1",
+          "tap_from": "substitution fluid connection",
+          "status": "generated",
+          "kb_refs": [
+            "06-fresenius-device-matrix.md"
+          ]
+        },
+        {
+          "id": "m2-p4",
+          "title": "DIASAFE\u00aeplus \u2014 Ultrapure Fluid Generation",
+          "objective": "Explain dual-filter endotoxin retention for online HDF",
+          "seed_query": "Raouf Academy \u2014 DIASAFE plus dual filter diagram for online HDF: dialysate inlet, two polysulfone filters in series, sterile substitution fluid outlet, endotoxin retention callout, Fresenius clinical style 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "first DIASAFE filter",
+            "second DIASAFE filter"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "external-hvhdf-fresenius.md",
+            "06-fresenius-device-matrix.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m3",
+      "title": "Fresenius 5008 Device Mastery",
+      "description": "Hardware, monitor UI, and intelligent safety features",
+      "pages": [
+        {
+          "id": "m3-p1",
+          "title": "Operator Monitor \u2014 HDF Prescription",
+          "objective": "Navigate treatment mode, UF rate, and convection volume on touchscreen",
+          "seed_query": "Raouf Academy \u2014 Fresenius 5008 hemodialysis monitor touchscreen UI illustration: HDF treatment mode selected, UF rate display, convection volume target, substitution rate, labeled buttons and alarms area, realistic clinical UI style 16:9, Raouf Academy badge bottom-left",
+          "parent_page": "m2-p1",
+          "tap_from": "Fresenius 5008 operator monitor",
+          "status": "generated",
+          "kb_refs": [
+            "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+          ]
+        },
+        {
+          "id": "m3-p2",
+          "title": "AutoSub plus & Venous Access Monitor",
+          "objective": "Explain automated convection optimization and needle dislodgement detection",
+          "seed_query": "Raouf Academy \u2014 Fresenius AutoSub plus and Venous Access Monitor VAM illustrated: pressure pulse waveform inside dialyzer, automatic substitution volume optimization, venous pressure monitoring for needle dislodgement, safety feature diagram 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "pressure pulse graph",
+            "VAM alert icon"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "06-fresenius-device-matrix.md",
+            "external-hvhdf-fresenius.md"
+          ]
+        },
+        {
+          "id": "m3-p3",
+          "title": "5008 Front View \u2014 Component Map",
+          "objective": "Identify all front-panel hardware from user manual",
+          "seed_query": "Raouf Academy \u2014 Fresenius 5008 hemodialysis system front view with labeled components: monitor, blood pump module, fluid connectors, power switch, clinical device illustration matching IFU style 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "blood pump",
+            "fluid connector panel"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4",
+      "title": "Clinical Implementation",
+      "description": "Prescribing high-volume HDF and patient selection",
+      "pages": [
+        {
+          "id": "m4-p1",
+          "title": "Achieving \u226523 L Convection Volume",
+          "objective": "Link trial dose definition to prescription parameters",
+          "seed_query": "Raouf Academy \u2014 clinical prescription diagram for high-volume HDF: target 23 liters convection per session, blood flow rate, treatment time, substitution rate calculation arrows, checklist for prescribers, medical education 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "convection volume gauge",
+            "prescription checklist"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "05-hdf-vs-hd-deep.md",
+            "external-hvhdf-fresenius.md"
+          ]
+        },
+        {
+          "id": "m4-p2",
+          "title": "Vascular Access for High-Flow HDF",
+          "objective": "Connect access type to achievable convection dose",
+          "seed_query": "Raouf Academy \u2014 vascular access for hemodiafiltration illustration: AV fistula vs catheter comparison, blood flow rates, access suitability for high convection HDF, clinical training diagram 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "AVF fistula diagram",
+            "catheter access"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "external-hvhdf-fresenius.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m5",
+      "title": "Stakeholder Value",
+      "description": "Communicating HDF benefits to clinicians, administrators, and patients",
+      "pages": [
+        {
+          "id": "m5-p1",
+          "title": "Stakeholder Value Map",
+          "objective": "Frame clinical, economic, and patient-reported value of HVHDF",
+          "seed_query": "Raouf Academy \u2014 medical device stakeholder value map for dialysis HDF: clinician clinical outcomes, administrator operational metrics, patient quality of life icons, connected hub diagram, professional sales training style 16:9, Raouf Academy badge bottom-left",
+          "tap_targets": [
+            "clinician icon",
+            "patient icon"
+          ],
+          "status": "generated",
+          "kb_refs": [
+            "digest-medical-devices-sales-imperatives.md"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m6",
+      "title": "Enrichment & Deep Dives",
+      "description": "Extended training pages \u2014 tap explorations, workflows, and clinical pearls",
+      "pages": [
+        {
+          "id": "m6-p1",
+          "title": "Pre- vs Post-Dilution HDF",
+          "objective": "Compare substitution timing and clearance tradeoffs",
+          "seed_query": "Raouf Academy \u2014 pre-dilution vs post-dilution hemodiafiltration comparison diagram with fluid infusion points, clearance efficiency arrows, clinical education 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p2",
+          "title": "Beta-2 Microglobulin & Amyloidosis",
+          "objective": "Link middle-molecule clearance to dialysis-related amyloidosis prevention",
+          "seed_query": "Raouf Academy \u2014 beta-2 microglobulin amyloidosis prevention infographic: molecule buildup in HD vs clearance in HDF, joint and tissue icons, medical education 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p3",
+          "title": "Intradialytic Hemodynamics",
+          "objective": "HDF effects on blood pressure stability during treatment",
+          "seed_query": "Raouf Academy \u2014 intradialytic blood pressure comparison chart HD vs HDF, cardiovascular stability during dialysis session, clinical training diagram 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p4",
+          "title": "5008 Alarm & Safety Hierarchy",
+          "objective": "Navigate critical alarms during HDF treatment",
+          "seed_query": "Raouf Academy \u2014 Fresenius 5008 alarm priority pyramid: air detector, venous pressure, blood leak, temperature alarms with response actions, safety training 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p5",
+          "title": "Blood Circuit Priming Sequence",
+          "objective": "Step-by-step extracorporeal circuit preparation",
+          "seed_query": "Raouf Academy \u2014 hemodialysis blood circuit priming sequence numbered steps: saline fill, dialyzer prime, air removal, patient connection, nurse training flowchart 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p6",
+          "title": "Ultrapure Dialysate Water Path",
+          "objective": "Trace water treatment to dialysate delivery",
+          "seed_query": "Raouf Academy \u2014 dialysis water treatment to ultrapure dialysate flow diagram: RO system, central delivery, DIASAFE filters, 16:9 clinical illustration, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p7",
+          "title": "FX CorAL Dialyzer Technology",
+          "objective": "Membrane design for high-volume HDF",
+          "seed_query": "Raouf Academy \u2014 FX CorAL dialyzer technology illustration: high-flux membrane fibers, convection-optimized design, labeled cross-section, Fresenius clinical style 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p8",
+          "title": "5008X CAREsystem \u2014 US Overview",
+          "objective": "US regulatory clearance and system components for HVHDF",
+          "seed_query": "Raouf Academy \u2014 Fresenius 5008X CAREsystem US overview diagram: FDA cleared HDF system, DIASAFE plus, FX CorAL, AutoSub plus features, professional medical device illustration 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p9",
+          "title": "Patient Selection Flowchart",
+          "objective": "Identify candidates for high-volume post-dilution HDF",
+          "seed_query": "Raouf Academy \u2014 patient selection flowchart for high-volume HDF: access adequacy, cardiovascular stability, convection feasibility decision tree, clinical algorithm 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p10",
+          "title": "Nurse Bedside HDF Checklist",
+          "objective": "Pre-treatment and intradialytic monitoring checklist",
+          "seed_query": "Raouf Academy \u2014 dialysis nurse bedside HDF checklist illustration: pre-treatment checks, convection volume monitoring, safety observations, laminated card style 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p11",
+          "title": "Physician Prescription Worksheet",
+          "objective": "HDF prescription parameters at a glance",
+          "seed_query": "Raouf Academy \u2014 physician HDF prescription worksheet: blood flow, treatment time, UF goal, convection volume target, substitution rate fields, clinical form illustration 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p12",
+          "title": "Fresenius Device Family Map",
+          "objective": "Position 5008 within Fresenius dialysis portfolio",
+          "seed_query": "Raouf Academy \u2014 Fresenius Medical Care dialysis device family map: 5008, 5008S CorDiax, 5008X, 6008, in-center vs home icons, product portfolio diagram 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p13",
+          "title": "Infection Control in Online HDF",
+          "objective": "Microbiological safety of online substitution fluid",
+          "seed_query": "Raouf Academy \u2014 infection control in online HDF diagram: endotoxin barriers, DIASAFE filtration, microbiological monitoring points, safety protocol 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p14",
+          "title": "Patient Quality of Life Outcomes",
+          "objective": "Patient-reported benefits of HDF therapy",
+          "seed_query": "Raouf Academy \u2014 patient quality of life outcomes infographic for HDF: fatigue reduction, symptom relief icons, patient-centered outcomes, warm clinical illustration 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p15",
+          "title": "Raouf Academy Learning Path",
+          "objective": "Certification pathway through all flipbook modules",
+          "seed_query": "Raouf Academy \u2014 elegant learning pathway infographic: 6 modules from HDF foundation to stakeholder value, progress badges, certification seal, teal and gold academy branding hero illustration 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p16",
+          "title": "HDF Dose-Response Curve",
+          "objective": "Visualize survival benefit vs convection volume from meta-analyses",
+          "seed_query": "Raouf Academy \u2014 HDF dose-response curve graph: convection volume liters per session on x-axis, mortality hazard ratio on y-axis, CONVINCE and ESHOL data points, clinical evidence infographic 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p17",
+          "title": "Troubleshooting Low Convection",
+          "objective": "Bedside algorithm when target convection volume not achieved",
+          "seed_query": "Raouf Academy \u2014 troubleshooting flowchart for low convection volume during HDF: check access flow, blood pump speed, substitution pump, TMP limits, nurse algorithm 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p18",
+          "title": "HDF vs HDx Comparison",
+          "objective": "Compare hemodiafiltration with expanded hemodialysis medium-cutoff membranes",
+          "seed_query": "Raouf Academy \u2014 HDF vs HDx expanded hemodialysis comparison diagram: convection vs medium cutoff membrane, beta-2 microglobulin clearance bars, technology comparison 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p19",
+          "title": "Session Close & Documentation",
+          "objective": "End-of-treatment documentation for HDF sessions",
+          "seed_query": "Raouf Academy \u2014 end of dialysis HDF session documentation checklist: achieved convection volume, UF delivered, adverse events, EMR documentation, nurse workflow 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p20",
+          "title": "Raouf Academy \u2014 Cover Page",
+          "objective": "Hero cover for the complete flipbook collection",
+          "seed_query": "Raouf Academy \u2014 stunning medical education cover illustration: Fresenius 5008 hemodialysis machine with HDF blood circuit glow, teal and gold Raouf Academy branding, title High-Volume HDF Training, professional healthcare academy hero 16:9",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p21",
+          "title": "H4RT Registry Trial Preview",
+          "objective": "Preview ongoing UK high-volume HDF outcomes research",
+          "seed_query": "Raouf Academy \u2014 H4RT registry trial preview infographic: UK hemodiafiltration registry, target 23L convection, results anticipated, clinical research timeline 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p22",
+          "title": "Protein-Bound Uremic Toxins",
+          "objective": "Explain p-cresyl sulfate and indoxyl sulfate clearance limits",
+          "seed_query": "Raouf Academy \u2014 protein-bound uremic toxins diagram: p-cresyl sulfate indoxyl sulfate albumin binding, HD vs HDF clearance comparison, medical biochemistry education 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p23",
+          "title": "Dialysis Nurse Handoff Communication",
+          "objective": "SBAR handoff template for HDF shift changes",
+          "seed_query": "Raouf Academy \u2014 SBAR nursing handoff communication card for HDF dialysis shift change: situation background assessment recommendation, clinical workflow 16:9, Raouf Academy badge bottom-left",
+          "status": "generated"
+        },
+        {
+          "id": "m6-p24",
+          "title": "Raouf Academy \u2014 Completion Certificate",
+          "objective": "Training completion certificate visual for learners",
+          "seed_query": "Raouf Academy \u2014 elegant medical training completion certificate design: Fresenius HDF expertise certified, teal gold border, official seal, professional credential layout 16:9",
+          "status": "generated"
+        }
+      ]
+    }
+  ],
+  "generation": {
+    "max_spend_usd": 10,
+    "image_model": "openrouter:recraft/recraft-v4.1-utility",
+    "session_style_anchor": "Raouf Academy clinical medical textbook illustration, teal and gold academy branding, labeled Fresenius dialysis components, clean educational diagram"
+  }
+}

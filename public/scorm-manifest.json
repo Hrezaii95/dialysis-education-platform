@@ -1,0 +1,17 @@
+{
+  "version": "SCORM 1.2",
+  "identifier": "hdf-clinical-simulator",
+  "title": "HDF Clinical Simulator",
+  "description": "Tier-1 HDF training — circuit sim, monitor, cases, alarms, credential",
+  "modules": [
+    { "id": "foundation", "href": "/flipbook", "masteryRequired": true },
+    { "id": "circuit", "href": "/simulator?tab=circuit", "masteryRequired": true },
+    { "id": "monitor", "href": "/simulator?tab=monitor", "masteryRequired": true },
+    { "id": "cases", "href": "/simulator?tab=cases", "masteryRequired": true },
+    { "id": "alarms", "href": "/alarms", "masteryRequired": true },
+    { "id": "convince", "href": "/convince", "masteryRequired": false },
+    { "id": "credential", "href": "/assessment", "masteryRequired": true, "passingScore": 75 }
+  ],
+  "xapiEndpoint": "client-local",
+  "note": "Static manifest stub — full imsmanifest.xml packaging is a later-phase LMS integration"
+}

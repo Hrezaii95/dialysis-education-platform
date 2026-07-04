@@ -1,0 +1,60 @@
+{
+  "version": "1.0.0",
+  "systems": [
+    {
+      "id": "5008op",
+      "name": "5008 OP",
+      "region": "Global",
+      "modes": ["HD", "HDF", "HF", "UF"],
+      "features": ["ONLINE substitution", "Touchscreen UI", "DIASAFE®plus"],
+      "hdf_automation": "Manual TMP optimization",
+      "safety": ["Air detector", "Venous pressure monitoring"],
+      "flipbook_ref": "m2-p1"
+    },
+    {
+      "id": "5008s",
+      "name": "5008S CorDiax",
+      "region": "EMEA",
+      "modes": ["HD", "HDF", "HF"],
+      "features": ["AutoSub plus", "VAM", "HighVolumeHDF"],
+      "hdf_automation": "Pressure-pulse TMP optimization",
+      "safety": ["VAM needle dislodgement", "AutoSub plus"],
+      "flipbook_ref": "m3-p2"
+    },
+    {
+      "id": "5008x",
+      "name": "5008X CAREsystem",
+      "region": "US (FDA K243505)",
+      "modes": ["HD", "HDF", "HF", "UF"],
+      "features": ["DIASAFE®plus", "FX CorAL dialyzer", "Integrated safety"],
+      "hdf_automation": "AutoSub plus class automation",
+      "safety": ["FDA-cleared HDF pathway", "VAM"],
+      "flipbook_ref": "m6-p18"
+    }
+  ],
+  "dialyzers": [
+    {
+      "id": "fx_highflux",
+      "name": "High-flux dialyzer",
+      "surface_area": "1.8 m²",
+      "convective_index": 60,
+      "middle_molecule_index": 55,
+      "use_case": "Standard HD / moderate HDF"
+    },
+    {
+      "id": "fx_coral",
+      "name": "FX CorAL class",
+      "surface_area": "2.0 m²",
+      "convective_index": 88,
+      "middle_molecule_index": 85,
+      "use_case": "High-volume HDF, 5008X pairing",
+      "flipbook_ref": "m6-p16"
+    }
+  ],
+  "components": [
+    { "id": "disasafe", "name": "DIASAFE®plus", "function": "Dual endotoxin-retentive filter for ultrapure substitution fluid", "flipbook_ref": "m2-p4" },
+    { "id": "autosub", "name": "AutoSub plus", "function": "Automated TMP pulses to maximize convection volume", "flipbook_ref": "m3-p2" },
+    { "id": "vam", "name": "Venous Access Monitor", "function": "Early needle dislodgement detection", "flipbook_ref": "m3-p2" },
+    { "id": "online", "name": "ONLINEplus", "function": "Generates sterile substitution fluid from ultrapure dialysate", "flipbook_ref": "m2-p3" }
+  ]
+}

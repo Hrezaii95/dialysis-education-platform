@@ -1,0 +1,716 @@
+{
+  "policy": "council_batch_only",
+  "description": "All flipbook pages are approved by the agent council and grounded in OpenKB. Live viewers cannot request new generations.",
+  "approved_by": [
+    "medtech-orchestrator",
+    "nephrologist",
+    "dialysis-nurse",
+    "fresenius-medical-educator",
+    "medical-representative",
+    "research-analyst",
+    "content-author"
+  ],
+  "kb_wiki_pages": [
+    "AGENTS.md",
+    "convince-trial.md",
+    "fresenius-5008-overview.md",
+    "hdf-clinical-foundation.md",
+    "log.md",
+    "post-dilution-substitution-path.md"
+  ],
+  "outline_source": "content/flipbook/book-outline.json",
+  "render_pipeline": "scripts/generate-flipbook-pages.py",
+  "live_mode": "curated_static_only",
+  "updated_at": "2026-06-26T04:32:18.592449+00:00",
+  "default_page": "m1-p1",
+  "cover_page": "m6-p20",
+  "sequence": [
+    "m1-p1",
+    "m1-p2",
+    "m1-p3",
+    "m2-p1",
+    "m2-p2",
+    "m2-p3",
+    "m2-p4",
+    "m3-p1",
+    "m3-p2",
+    "m3-p3",
+    "m4-p1",
+    "m4-p2",
+    "m5-p1",
+    "m6-p1",
+    "m6-p2",
+    "m6-p3",
+    "m6-p4",
+    "m6-p5",
+    "m6-p6",
+    "m6-p7",
+    "m6-p8",
+    "m6-p9",
+    "m6-p10",
+    "m6-p11",
+    "m6-p12",
+    "m6-p13",
+    "m6-p14",
+    "m6-p15",
+    "m6-p16",
+    "m6-p17",
+    "m6-p18",
+    "m6-p19",
+    "m6-p20",
+    "m6-p21",
+    "m6-p22",
+    "m6-p23",
+    "m6-p24"
+  ],
+  "pages": {
+    "m1-p1": {
+      "title": "HDF vs HD \u2014 The Clearance Revolution",
+      "objective": "Compare diffusive HD with convective-diffusive HDF at a glance",
+      "module_id": "m1",
+      "module_title": "HDF Clinical Foundation",
+      "image": "pages/m1-p1.jpg",
+      "kb_refs": [
+        "05-hdf-vs-hd-deep.md",
+        "external-hvhdf-fresenius.md"
+      ],
+      "status": "generated"
+    },
+    "m1-p2": {
+      "title": "Middle Molecules & Uremic Toxins",
+      "objective": "Explain why \u03b22-microglobulin and middle molecules drive HDF benefit",
+      "module_id": "m1",
+      "module_title": "HDF Clinical Foundation",
+      "image": "pages/m1-p2.jpg",
+      "kb_refs": [
+        "05-hdf-vs-hd-deep.md"
+      ],
+      "status": "generated"
+    },
+    "m1-p3": {
+      "title": "CONVINCE Trial \u2014 Evidence at Scale",
+      "objective": "Summarize CONVINCE RCT mortality findings and dose achieved",
+      "module_id": "m1",
+      "module_title": "HDF Clinical Foundation",
+      "image": "pages/m1-p3.jpg",
+      "kb_refs": [
+        "external-hvhdf-fresenius.md"
+      ],
+      "status": "generated"
+    },
+    "m2-p1": {
+      "title": "5008 Blood Circuit \u2014 HVHDF Overview",
+      "objective": "Orient learner to full extracorporeal circuit in post-dilution mode",
+      "module_id": "m2",
+      "module_title": "Post-Dilution HVHDF Technology",
+      "image": "pages/m2-p1.jpg",
+      "kb_refs": [
+        "06-fresenius-device-matrix.md",
+        "digest-2341351-fme-hvhdf-handbook-arep-fin2-fs.md"
+      ],
+      "status": "generated"
+    },
+    "m2-p2": {
+      "title": "Dialyzer Membrane Cross-Section",
+      "objective": "Show diffusive and convective transport at fiber level",
+      "module_id": "m2",
+      "module_title": "Post-Dilution HVHDF Technology",
+      "image": "pages/m2-p2.jpg",
+      "kb_refs": [
+        "05-hdf-vs-hd-deep.md"
+      ],
+      "status": "generated"
+    },
+    "m2-p3": {
+      "title": "Post-Dilution Substitution Fluid Path",
+      "objective": "Trace replacement fluid from ONLINE system to venous return",
+      "module_id": "m2",
+      "module_title": "Post-Dilution HVHDF Technology",
+      "image": "pages/m2-p3.jpg",
+      "kb_refs": [
+        "06-fresenius-device-matrix.md"
+      ],
+      "status": "generated"
+    },
+    "m2-p4": {
+      "title": "DIASAFE\u00aeplus \u2014 Ultrapure Fluid Generation",
+      "objective": "Explain dual-filter endotoxin retention for online HDF",
+      "module_id": "m2",
+      "module_title": "Post-Dilution HVHDF Technology",
+      "image": "pages/m2-p4.jpg",
+      "kb_refs": [
+        "external-hvhdf-fresenius.md",
+        "06-fresenius-device-matrix.md"
+      ],
+      "status": "generated"
+    },
+    "m3-p1": {
+      "title": "Operator Monitor \u2014 HDF Prescription",
+      "objective": "Navigate treatment mode, UF rate, and convection volume on touchscreen",
+      "module_id": "m3",
+      "module_title": "Fresenius 5008 Device Mastery",
+      "image": "pages/m3-p1.jpg",
+      "kb_refs": [
+        "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+      ],
+      "status": "generated"
+    },
+    "m3-p2": {
+      "title": "AutoSub plus & Venous Access Monitor",
+      "objective": "Explain automated convection optimization and needle dislodgement detection",
+      "module_id": "m3",
+      "module_title": "Fresenius 5008 Device Mastery",
+      "image": "pages/m3-p2.jpg",
+      "kb_refs": [
+        "06-fresenius-device-matrix.md",
+        "external-hvhdf-fresenius.md"
+      ],
+      "status": "generated"
+    },
+    "m3-p3": {
+      "title": "5008 Front View \u2014 Component Map",
+      "objective": "Identify all front-panel hardware from user manual",
+      "module_id": "m3",
+      "module_title": "Fresenius 5008 Device Mastery",
+      "image": "pages/m3-p3.jpg",
+      "kb_refs": [
+        "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+      ],
+      "status": "generated"
+    },
+    "m4-p1": {
+      "title": "Achieving \u226523 L Convection Volume",
+      "objective": "Link trial dose definition to prescription parameters",
+      "module_id": "m4",
+      "module_title": "Clinical Implementation",
+      "image": "pages/m4-p1.jpg",
+      "kb_refs": [
+        "05-hdf-vs-hd-deep.md",
+        "external-hvhdf-fresenius.md"
+      ],
+      "status": "generated"
+    },
+    "m4-p2": {
+      "title": "Vascular Access for High-Flow HDF",
+      "objective": "Connect access type to achievable convection dose",
+      "module_id": "m4",
+      "module_title": "Clinical Implementation",
+      "image": "pages/m4-p2.jpg",
+      "kb_refs": [
+        "external-hvhdf-fresenius.md"
+      ],
+      "status": "generated"
+    },
+    "m5-p1": {
+      "title": "Stakeholder Value Map",
+      "objective": "Frame clinical, economic, and patient-reported value of HVHDF",
+      "module_id": "m5",
+      "module_title": "Stakeholder Value",
+      "image": "pages/m5-p1.jpg",
+      "kb_refs": [
+        "digest-medical-devices-sales-imperatives.md"
+      ],
+      "status": "generated"
+    },
+    "m6-p1": {
+      "title": "Pre- vs Post-Dilution HDF",
+      "objective": "Compare substitution timing and clearance tradeoffs",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p1.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p2": {
+      "title": "Beta-2 Microglobulin & Amyloidosis",
+      "objective": "Link middle-molecule clearance to dialysis-related amyloidosis prevention",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p2.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p3": {
+      "title": "Intradialytic Hemodynamics",
+      "objective": "HDF effects on blood pressure stability during treatment",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p3.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p4": {
+      "title": "5008 Alarm & Safety Hierarchy",
+      "objective": "Navigate critical alarms during HDF treatment",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p4.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p5": {
+      "title": "Blood Circuit Priming Sequence",
+      "objective": "Step-by-step extracorporeal circuit preparation",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p5.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p6": {
+      "title": "Ultrapure Dialysate Water Path",
+      "objective": "Trace water treatment to dialysate delivery",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p6.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p7": {
+      "title": "FX CorAL Dialyzer Technology",
+      "objective": "Membrane design for high-volume HDF",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p7.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p8": {
+      "title": "5008X CAREsystem \u2014 US Overview",
+      "objective": "US regulatory clearance and system components for HVHDF",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p8.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p9": {
+      "title": "Patient Selection Flowchart",
+      "objective": "Identify candidates for high-volume post-dilution HDF",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p9.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p10": {
+      "title": "Nurse Bedside HDF Checklist",
+      "objective": "Pre-treatment and intradialytic monitoring checklist",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p10.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p11": {
+      "title": "Physician Prescription Worksheet",
+      "objective": "HDF prescription parameters at a glance",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p11.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p12": {
+      "title": "Fresenius Device Family Map",
+      "objective": "Position 5008 within Fresenius dialysis portfolio",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p12.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p13": {
+      "title": "Infection Control in Online HDF",
+      "objective": "Microbiological safety of online substitution fluid",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p13.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p14": {
+      "title": "Patient Quality of Life Outcomes",
+      "objective": "Patient-reported benefits of HDF therapy",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p14.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p15": {
+      "title": "Raouf Academy Learning Path",
+      "objective": "Certification pathway through all flipbook modules",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p15.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p16": {
+      "title": "HDF Dose-Response Curve",
+      "objective": "Visualize survival benefit vs convection volume from meta-analyses",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p16.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p17": {
+      "title": "Troubleshooting Low Convection",
+      "objective": "Bedside algorithm when target convection volume not achieved",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p17.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p18": {
+      "title": "HDF vs HDx Comparison",
+      "objective": "Compare hemodiafiltration with expanded hemodialysis medium-cutoff membranes",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p18.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p19": {
+      "title": "Session Close & Documentation",
+      "objective": "End-of-treatment documentation for HDF sessions",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p19.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p20": {
+      "title": "Raouf Academy \u2014 Cover Page",
+      "objective": "Hero cover for the complete flipbook collection",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p20.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p21": {
+      "title": "H4RT Registry Trial Preview",
+      "objective": "Preview ongoing UK high-volume HDF outcomes research",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p21.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p22": {
+      "title": "Protein-Bound Uremic Toxins",
+      "objective": "Explain p-cresyl sulfate and indoxyl sulfate clearance limits",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p22.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p23": {
+      "title": "Dialysis Nurse Handoff Communication",
+      "objective": "SBAR handoff template for HDF shift changes",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p23.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    },
+    "m6-p24": {
+      "title": "Raouf Academy \u2014 Completion Certificate",
+      "objective": "Training completion certificate visual for learners",
+      "module_id": "m6",
+      "module_title": "Enrichment & Deep Dives",
+      "image": "pages/m6-p24.jpg",
+      "kb_refs": [],
+      "status": "generated"
+    }
+  },
+  "navigation": {
+    "m1-p1": [
+      {
+        "label": "Continue \u2192 Middle Molecules & Uremic Toxins",
+        "target_page": "m1-p2",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "05-hdf-vs-hd-deep.md"
+        ]
+      }
+    ],
+    "m1-p2": [
+      {
+        "label": "Continue \u2192 CONVINCE Trial \u2014 Evidence at Scale",
+        "target_page": "m1-p3",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "external-hvhdf-fresenius.md"
+        ]
+      }
+    ],
+    "m2-p1": [
+      {
+        "label": "dialyzer membrane cartridge",
+        "target_page": "m2-p2",
+        "approved_by": "content-author",
+        "kb_refs": [
+          "05-hdf-vs-hd-deep.md"
+        ]
+      },
+      {
+        "label": "substitution fluid connection",
+        "target_page": "m2-p3",
+        "approved_by": "content-author",
+        "kb_refs": [
+          "06-fresenius-device-matrix.md"
+        ]
+      },
+      {
+        "label": "Fresenius 5008 operator monitor",
+        "target_page": "m3-p1",
+        "approved_by": "content-author",
+        "kb_refs": [
+          "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+        ]
+      }
+    ],
+    "m2-p2": [
+      {
+        "label": "Continue \u2192 Post-Dilution Substitution Fluid Path",
+        "target_page": "m2-p3",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "06-fresenius-device-matrix.md"
+        ]
+      }
+    ],
+    "m2-p3": [
+      {
+        "label": "Continue \u2192 DIASAFE\u00aeplus \u2014 Ultrapure Fluid Generatio",
+        "target_page": "m2-p4",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "external-hvhdf-fresenius.md",
+          "06-fresenius-device-matrix.md"
+        ]
+      }
+    ],
+    "m3-p1": [
+      {
+        "label": "Continue \u2192 AutoSub plus & Venous Access Monitor",
+        "target_page": "m3-p2",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "06-fresenius-device-matrix.md",
+          "external-hvhdf-fresenius.md"
+        ]
+      }
+    ],
+    "m3-p2": [
+      {
+        "label": "Continue \u2192 5008 Front View \u2014 Component Map",
+        "target_page": "m3-p3",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "digest-fresenius-5008-hemodialysis-system-user-manual.md"
+        ]
+      }
+    ],
+    "m4-p1": [
+      {
+        "label": "Continue \u2192 Vascular Access for High-Flow HDF",
+        "target_page": "m4-p2",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": [
+          "external-hvhdf-fresenius.md"
+        ]
+      }
+    ],
+    "m6-p1": [
+      {
+        "label": "Continue \u2192 Beta-2 Microglobulin & Amyloidosis",
+        "target_page": "m6-p2",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p2": [
+      {
+        "label": "Continue \u2192 Intradialytic Hemodynamics",
+        "target_page": "m6-p3",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p3": [
+      {
+        "label": "Continue \u2192 5008 Alarm & Safety Hierarchy",
+        "target_page": "m6-p4",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p4": [
+      {
+        "label": "Continue \u2192 Blood Circuit Priming Sequence",
+        "target_page": "m6-p5",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p5": [
+      {
+        "label": "Continue \u2192 Ultrapure Dialysate Water Path",
+        "target_page": "m6-p6",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p6": [
+      {
+        "label": "Continue \u2192 FX CorAL Dialyzer Technology",
+        "target_page": "m6-p7",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p7": [
+      {
+        "label": "Continue \u2192 5008X CAREsystem \u2014 US Overview",
+        "target_page": "m6-p8",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p8": [
+      {
+        "label": "Continue \u2192 Patient Selection Flowchart",
+        "target_page": "m6-p9",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p9": [
+      {
+        "label": "Continue \u2192 Nurse Bedside HDF Checklist",
+        "target_page": "m6-p10",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p10": [
+      {
+        "label": "Continue \u2192 Physician Prescription Worksheet",
+        "target_page": "m6-p11",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p11": [
+      {
+        "label": "Continue \u2192 Fresenius Device Family Map",
+        "target_page": "m6-p12",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p12": [
+      {
+        "label": "Continue \u2192 Infection Control in Online HDF",
+        "target_page": "m6-p13",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p13": [
+      {
+        "label": "Continue \u2192 Patient Quality of Life Outcomes",
+        "target_page": "m6-p14",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p14": [
+      {
+        "label": "Continue \u2192 Raouf Academy Learning Path",
+        "target_page": "m6-p15",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p15": [
+      {
+        "label": "Continue \u2192 HDF Dose-Response Curve",
+        "target_page": "m6-p16",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p16": [
+      {
+        "label": "Continue \u2192 Troubleshooting Low Convection",
+        "target_page": "m6-p17",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p17": [
+      {
+        "label": "Continue \u2192 HDF vs HDx Comparison",
+        "target_page": "m6-p18",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p18": [
+      {
+        "label": "Continue \u2192 Session Close & Documentation",
+        "target_page": "m6-p19",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p19": [
+      {
+        "label": "Continue \u2192 Raouf Academy \u2014 Cover Page",
+        "target_page": "m6-p20",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p20": [
+      {
+        "label": "Continue \u2192 H4RT Registry Trial Preview",
+        "target_page": "m6-p21",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p21": [
+      {
+        "label": "Continue \u2192 Protein-Bound Uremic Toxins",
+        "target_page": "m6-p22",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p22": [
+      {
+        "label": "Continue \u2192 Dialysis Nurse Handoff Communication",
+        "target_page": "m6-p23",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ],
+    "m6-p23": [
+      {
+        "label": "Continue \u2192 Raouf Academy \u2014 Completion Certificate",
+        "target_page": "m6-p24",
+        "approved_by": "medtech-orchestrator",
+        "kb_refs": []
+      }
+    ]
+  }
+}

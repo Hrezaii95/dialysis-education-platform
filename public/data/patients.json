@@ -1,0 +1,88 @@
+{
+  "version": "2.0.0",
+  "disclaimer": "Educational simulation only — not medical advice. Outcomes are modeled indices for learning.",
+  "cases": [
+    {
+      "id": "idh",
+      "name": "Mr. K — IDH",
+      "age": 64,
+      "avatar": "IDH",
+      "access": "AVF (adequate)",
+      "story": "Case 1 · Hemodynamic. Diabetic, 3×/week in-center HD via AVF. Large interdialytic weight gain (+3.8 kg); UF goal 3.5 L over 4 h. Took morning antihypertensive. 90 min in: lightheadedness, yawning, left calf cramp.",
+      "vitals": {
+        "pre_weight": "+3.8 kg",
+        "uf_goal": "3.5 L / 4 h",
+        "sbp_t0": "148/82",
+        "sbp_t90": "98/58 (↓ flagged)",
+        "hr_t90": "96"
+      },
+      "learning_objectives": [
+        "Recognise the plasma-refill vs UF-rate mechanism of IDH",
+        "Execute the stop-UF / Trendelenburg / measured-bolus first response",
+        "Build the multifactorial prevention bundle (UF rate, dry weight, AM antihypertensive hold, cool dialysate)",
+        "Explain how convective HDF reduces IDH incidence (CONVINCE secondary endpoint)"
+      ],
+      "build": "real"
+    },
+    {
+      "id": "cardiac",
+      "name": "Mrs. R — Arrhythmia",
+      "age": 71,
+      "avatar": "ARR",
+      "access": "Not specified",
+      "story": "Case 2 · Cardiac [preview — full case in production build]. Ischemic heart disease + LVH, on digoxin. Predialysis K⁺ 4.6 mmol/L (low-normal). Dialysate K⁺ mis-set to 1.0 mmol/L. Two hours in: palpitations, then ventricular ectopy.",
+      "vitals": {
+        "pre_k": "4.6 mmol/L",
+        "dialysate_k": "1.0 mmol/L (error)",
+        "k_t120": "2.9 mmol/L",
+        "rhythm_t120": "PVCs + couplets (flagged)"
+      },
+      "learning_objectives": [
+        "Identify the low-dialysate-K trap in digitalis patients",
+        "Correct dialysate K to 3–3.5 mEq/L as first-line fix",
+        "Understand the sudden-death risk of K < 2 mmol/L in at-risk patients (Karaboyas 2017 AJKD)"
+      ],
+      "build": "stub"
+    },
+    {
+      "id": "hyperk",
+      "name": "Mr. T — Hyperkalemia",
+      "age": 58,
+      "avatar": "HYK",
+      "access": "Not specified",
+      "story": "Case 3 · Electrolytes [preview — full case in production build]. Missed two sessions, large K⁺ intake. Unscheduled: weak, palpitations, paresthesias. Point-of-care K⁺ 7.2 mmol/L, tented T waves, QRS beginning to widen.",
+      "vitals": {
+        "pre_k": "7.2 mmol/L",
+        "ecg": "Tented T / early QRS widening",
+        "k_t30": "5.9 (after Ca + shift)",
+        "k_t120": "4.6 (after HD)"
+      },
+      "learning_objectives": [
+        "Apply the three-level order: stabilise (IV Ca) → shift (insulin/albuterol) → remove (HD)",
+        "Understand why calcium must precede dialysis when QRS is widening",
+        "State HD K⁺ removal capacity (70–150 mEq per session)"
+      ],
+      "build": "stub"
+    },
+    {
+      "id": "acidosis",
+      "name": "Cluster — Concentrate Error",
+      "age": 0,
+      "avatar": "ACD",
+      "access": "Shared water loop",
+      "story": "Case 4 · Acid–base [preview — full case in production build]. Mid-session: three patients on one water loop report dyspnoea, nausea, and air hunger within 20 min. New acid concentrate connected that morning; one machine's conductivity reads borderline.",
+      "vitals": {
+        "cluster_onset": "t = 90 min",
+        "symptom": "Air hunger / Kussmaul breathing",
+        "conductivity": "Borderline on one machine",
+        "trigger": "Concentrate substitution (suspected)"
+      },
+      "learning_objectives": [
+        "Recognise symptom clusters on a shared loop as a machine/concentrate signal, not individual patient events",
+        "Apply the immediate response: stop treatments, check conductivity + concentrate connections, draw blood gas",
+        "Articulate interlocks staff must trust to prevent accidental acidosis"
+      ],
+      "build": "stub"
+    }
+  ]
+}

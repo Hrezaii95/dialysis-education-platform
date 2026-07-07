@@ -1,34 +1,38 @@
+// Pulse-R mark — locked identity (design-system/identity/Final Identity - Locked.dc.html).
+// Ring + R in the current theme ink, heartbeat crossbar always green (the mark's one
+// signal color — never recolored). Reversed automatically via CSS (fill/stroke follow
+// currentColor for the ring; the heartbeat path is hardcoded lime-green per brand rule).
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <span className="flex items-center gap-2.5">
       <svg
-        width="32"
-        height="32"
-        viewBox="0 0 32 32"
+        width="30"
+        height="30"
+        viewBox="0 0 200 200"
         fill="none"
         aria-hidden
-        className="shrink-0"
+        className="shrink-0 text-text"
       >
-        <defs>
-          <linearGradient id="raoufMark" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-            <stop stopColor="#1bd3bf" />
-            <stop offset="1" stopColor="#1f6bff" />
-          </linearGradient>
-        </defs>
-        <rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="url(#raoufMark)" />
-        <rect x="1.5" y="1.5" width="29" height="29" rx="9" fill="black" opacity="0.12" />
-        {/* convection flow lines */}
-        <path d="M7 11.5C12 8.5 20 14.5 25 11.5" stroke="white" strokeOpacity="0.95" strokeWidth="1.8" strokeLinecap="round" />
-        <path d="M7 16C12 13 20 19 25 16" stroke="white" strokeOpacity="0.7" strokeWidth="1.8" strokeLinecap="round" />
-        <path d="M7 20.5C12 17.5 20 23.5 25 20.5" stroke="white" strokeOpacity="0.45" strokeWidth="1.8" strokeLinecap="round" />
+        <g stroke="currentColor">
+          <circle cx="102" cy="99" r="85.75" strokeWidth="9" />
+          <path d="M26 54.5 H125 A40.5 40.5 0 0 1 154.5 95 A37.6 37.6 0 0 1 110 130" strokeWidth="8.5" />
+          <path d="M63.5 90 V177" strokeWidth="8.5" />
+          <path d="M109 133 L140 177" strokeWidth="9" />
+        </g>
+        <path
+          d="M15 91.5 H76 L86 74 L96 106 L105 91.5 H119.5"
+          stroke="#35C98E"
+          strokeWidth="8.5"
+          strokeLinejoin="round"
+        />
       </svg>
       {!compact && (
         <span className="leading-tight">
-          <span className="block text-sm font-semibold tracking-tight">
-            Raouf Renal <span className="text-flow">Academy</span>
+          <span className="block text-sm font-bold tracking-tight">
+            RAOUF
           </span>
           <span className="block text-[10px] uppercase tracking-[0.16em] text-muted">
-            Interactive HDF training
+            Clinical Academy
           </span>
         </span>
       )}

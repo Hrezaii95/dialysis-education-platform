@@ -20,6 +20,7 @@ import { AUDIENCES } from "@/lib/competencies";
 import type { Audience } from "@/lib/competencies";
 import { useRole } from "@/components/onboarding/useRole";
 import { FirstImpression } from "@/components/onboarding/FirstImpression";
+import { ScrollHero } from "@/components/home/ScrollHero";
 
 // ── Static data ───────────────────────────────────────────────────────────────
 
@@ -38,39 +39,39 @@ function HeroCircuit() {
     <svg viewBox="0 0 420 280" className="h-auto w-full" role="img" aria-label="Live extracorporeal HDF circuit">
       <defs>
         <linearGradient id="dz" x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="#1bd3bf" stopOpacity="0.9" />
-          <stop offset="1" stopColor="#1f6bff" stopOpacity="0.85" />
+          <stop stopColor="#5D8AD4" stopOpacity="0.9" />
+          <stop offset="1" stopColor="#10306B" stopOpacity="0.9" />
         </linearGradient>
       </defs>
       {/* patient */}
-      <circle cx="50" cy="150" r="26" fill="#0f1521" stroke="rgba(255,255,255,0.12)" />
-      <text x="50" y="195" textAnchor="middle" fontSize="11" fill="#94a2b6">Patient</text>
-      <circle cx="50" cy="142" r="8" fill="#1d2840" />
-      <rect x="40" y="150" width="20" height="16" rx="6" fill="#1d2840" />
+      <circle cx="50" cy="150" r="26" fill="#112A5E" stroke="rgba(255,255,255,0.12)" />
+      <text x="50" y="195" textAnchor="middle" fontSize="11" fill="#9FB0C8">Patient</text>
+      <circle cx="50" cy="142" r="8" fill="#16336B" />
+      <rect x="40" y="150" width="20" height="16" rx="6" fill="#16336B" />
       {/* arterial (blood out) */}
       <path d="M76 140 C130 110 150 100 196 110" stroke="#ef4444" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.5" />
       <path d="M76 140 C130 110 150 100 196 110" stroke="#fb7185" strokeWidth="2.2" fill="none" strokeLinecap="round" className="flow-dash" />
       {/* pump */}
-      <circle cx="150" cy="103" r="15" fill="#151d2c" stroke="rgba(255,255,255,0.14)" />
-      <circle cx="150" cy="103" r="5" fill="#16c2b0">
+      <circle cx="150" cy="103" r="15" fill="#16336B" stroke="rgba(255,255,255,0.14)" />
+      <circle cx="150" cy="103" r="5" fill="#9BC0F2">
         <animateTransform attributeName="transform" type="rotate" from="0 150 103" to="360 150 103" dur="2.4s" repeatCount="indefinite" />
       </circle>
-      <text x="150" y="135" textAnchor="middle" fontSize="9" fill="#94a2b6">Blood pump</text>
+      <text x="150" y="135" textAnchor="middle" fontSize="9" fill="#9FB0C8">Blood pump</text>
       {/* dialyzer */}
       <rect x="196" y="86" width="40" height="108" rx="14" fill="url(#dz)" />
       {[0, 1, 2, 3].map((i) => (
         <line key={i} x1={204 + i * 8} y1="92" x2={204 + i * 8} y2="188" stroke="#ffffff" strokeOpacity="0.45" strokeWidth="1" />
       ))}
-      <text x="216" y="210" textAnchor="middle" fontSize="10" fill="#9fe9df">Dialyzer</text>
-      {/* convection (teal substitution) */}
-      <path d="M236 140 C270 140 280 120 300 120" stroke="#16c2b0" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4" />
-      <path d="M236 140 C270 140 280 120 300 120" stroke="#5eead4" strokeWidth="1.8" fill="none" strokeLinecap="round" className="flow-dash" />
-      <circle cx="312" cy="120" r="12" fill="#0f1521" stroke="rgba(22,194,176,0.5)" />
-      <text x="312" y="150" textAnchor="middle" fontSize="8.5" fill="#94a2b6">AutoSub</text>
+      <text x="216" y="210" textAnchor="middle" fontSize="10" fill="#BCD5F2">Dialyzer</text>
+      {/* convection (data-blue substitution) */}
+      <path d="M236 140 C270 140 280 120 300 120" stroke="#5D8AD4" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.4" />
+      <path d="M236 140 C270 140 280 120 300 120" stroke="#9BC0F2" strokeWidth="1.8" fill="none" strokeLinecap="round" className="flow-dash" />
+      <circle cx="312" cy="120" r="12" fill="#112A5E" stroke="rgba(155,192,242,0.5)" />
+      <text x="312" y="150" textAnchor="middle" fontSize="8.5" fill="#9FB0C8">AutoSub</text>
       {/* venous (blood return) */}
       <path d="M216 194 C200 240 130 250 76 165" stroke="#ef4444" strokeWidth="4" fill="none" strokeLinecap="round" opacity="0.45" />
       <path d="M216 194 C200 240 130 250 76 165" stroke="#fb7185" strokeWidth="2.2" fill="none" strokeLinecap="round" className="flow-dash" />
-      <text x="150" y="262" textAnchor="middle" fontSize="9" fill="#94a2b6">Venous return</text>
+      <text x="150" y="262" textAnchor="middle" fontSize="9" fill="#9FB0C8">Venous return</text>
     </svg>
   );
 }
@@ -238,6 +239,11 @@ export default function Home() {
 
   return (
     <div className="space-y-16">
+
+      {/* SCROLL HERO — decorative, motion-enabled desktop only (design-system/ui_kits/landing/motion-hero.md).
+          Renders nothing for prefers-reduced-motion / lowspec / onboarding phases — the hero and
+          onboarding IA below are completely unchanged either way. */}
+      {phase !== "first-impression" && phase !== "role-pick" && <ScrollHero />}
 
       {/* HERO — always visible (reduced when onboarding) */}
       {phase !== "first-impression" && phase !== "role-pick" && (

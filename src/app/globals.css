@@ -1,28 +1,47 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Brand roll-out (S4 → client-demo completion, 2026-07-07).
+   Palette re-pointed to the Locked Pulse-R identity
+   (design-preview/tokens.css + tools/brand/brand-bridge.css,
+   POC verified a11y-safe in design-handoff/audits/S4-a11y-scan.md).
+   Same token NAMES as before — every component already consumes
+   these — only the VALUES change (navy voice, lime signal).
+   Fonts: decision D3 — system stack only, no CDN, no next/font.
+   ============================================================ */
 :root {
-  --canvas: #06080d;
-  --surface-0: #0a0e16;
-  --surface-1: #0f1521;
-  --surface-2: #151d2c;
-  --surface-3: #1d2840;
-  --hairline: rgba(255, 255, 255, 0.07);
-  --hairline-strong: rgba(255, 255, 255, 0.13);
+  --canvas: #0B1E45;        /* navy-900 */
+  --surface-0: #0D2350;
+  --surface-1: #112A5E;     /* navy-800 */
+  --surface-2: #16336B;
+  --surface-3: #1A3A78;     /* navy-600 */
+  --hairline: rgba(255, 255, 255, 0.08);
+  --hairline-strong: rgba(255, 255, 255, 0.26);
 
-  --flow: #16c2b0;       /* signature — dialysis convection / flow */
-  --flow-hover: #2fd6c4;
-  --accent: #16c2b0;     /* alias → flow (legacy components) */
-  --accent-hover: #2fd6c4;
-  --raouf-blue: #2b6cff; /* device / brand (5008) */
-  --teal: #16c2b0;
-  --gold: #e0b23a;       /* evidence / CONVINCE */
-  --violet: #7c8cf8;
+  --flow: #9BC0F2;          /* blue-200 — links/emphasis (teal retired) */
+  --flow-hover: #BCD5F2;
+  --accent: #9BC0F2;        /* alias → flow (legacy components) */
+  --accent-hover: #BCD5F2;
+  --raouf-blue: #5D8AD4;    /* device / brand data-blue */
+  --teal: #9BC0F2;          /* legacy alias, same value as --flow */
+  --gold: #E39A3B;          /* evidence / CONVINCE (brand warning hue) */
+  --violet: #7FA9E8;
+  --signal: #8FE05A;        /* lime — live/verified/passing ONLY, never decoration */
 
-  --text: #eef2f6;
-  --text-muted: #94a2b6;
-  --danger: #f43f5e;
-  --success: #22c55e;
-  --warning: #f59e0b;
+  --text: #F2F5FA;
+  --text-muted: #9FB0C8;
+  --danger: #DA4A54;
+  --success: #2E8E54;
+  --warning: #E39A3B;
+
+  /* Pulse-R mark accents — logo + link-hover ONLY, never UI chrome */
+  --ring-blue: #1C75BC;
+  --pulse-green: #35C98E;
+
+  /* fonts — system stack; slot names kept for a future brand woff2 */
+  --font-geist-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-instrument: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
+  --font-fa: Tahoma, "Segoe UI", system-ui, sans-serif;
 }
 
 @theme inline {
@@ -58,20 +77,20 @@ body {
   overflow-x: hidden;
 }
 
-/* premium ambient background */
+/* premium ambient background — convection wash (Pulse-R identity, imagery only) */
 .mesh-bg {
   position: fixed;
   inset: 0;
   z-index: -1;
   background:
-    radial-gradient(58% 48% at 12% -6%, rgba(22, 194, 176, 0.12), transparent 70%),
-    radial-gradient(48% 40% at 96% 4%, rgba(43, 108, 255, 0.09), transparent 70%),
-    radial-gradient(42% 32% at 62% 104%, rgba(224, 178, 58, 0.05), transparent 70%),
+    radial-gradient(58% 48% at 12% -6%, rgba(143, 224, 90, 0.10), transparent 70%),
+    radial-gradient(48% 40% at 96% 4%, rgba(91, 138, 212, 0.10), transparent 70%),
+    radial-gradient(42% 32% at 62% 104%, rgba(154, 189, 232, 0.06), transparent 70%),
     var(--canvas);
 }
 
 .grad-text {
-  background: linear-gradient(135deg, #eaf7f5 0%, var(--flow) 58%, #9fe9df 100%);
+  background: linear-gradient(135deg, #C4E8B4 0%, var(--flow) 58%, #8FB4E4 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -96,16 +115,18 @@ body {
 
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
-  padding: 0.6rem 1.1rem; border-radius: 10px; font-size: 0.875rem; font-weight: 600;
+  padding: 0.6rem 1.1rem; border-radius: 999px; font-size: 0.875rem; font-weight: 600;
   transition: all 0.15s ease; cursor: pointer; border: 1px solid transparent;
+  min-height: 44px;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+/* Brand CTA — ALWAYS white-on-navy(dark) / navy-on-white(light). Fixes the legacy 2.2:1 teal-CTA AA failure. */
 .btn-primary {
-  background: linear-gradient(180deg, var(--flow-hover), var(--flow));
-  color: #04221f;
-  box-shadow: 0 8px 24px -10px rgba(22, 194, 176, 0.6);
+  background: #FFFFFF;
+  color: #10306B;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.5);
 }
-.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 30px -10px rgba(22, 194, 176, 0.85); }
+.btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6); }
 .btn-primary:active:not(:disabled) { transform: translateY(0); }
 .btn-ghost { background: rgba(255, 255, 255, 0.03); border-color: var(--hairline); color: var(--text); }
 .btn-ghost:hover:not(:disabled) { background: var(--surface-2); border-color: var(--hairline-strong); }
@@ -115,10 +136,11 @@ body {
   padding: 0.28rem 0.65rem; border-radius: 999px; font-size: 0.72rem; font-weight: 600;
   border: 1px solid var(--hairline); background: rgba(255, 255, 255, 0.03); color: var(--text-muted);
 }
+/* Lime = signal only (live / verified / passing) — never decoration */
 .badge-flow {
-  color: #9fe9df;
-  border-color: color-mix(in srgb, var(--flow) 42%, transparent);
-  background: color-mix(in srgb, var(--flow) 12%, transparent);
+  color: #0F2A0B;
+  border-color: #8FE05A;
+  background: #8FE05A;
 }
 
 .tabular-nums { font-variant-numeric: tabular-nums; }
@@ -128,21 +150,28 @@ html.font-fa body { font-family: var(--font-fa), var(--font-geist-sans), system-
 
 /* ===== Light theme (persistent toggle, like language) ===== */
 html.light {
-  --canvas: #f6f8fb;
-  --surface-0: #ffffff;
-  --surface-1: #eef2f7;
-  --surface-2: #e4eaf2;
-  --surface-3: #d7e0ec;
-  --hairline: rgba(15, 23, 42, 0.09);
-  --hairline-strong: rgba(15, 23, 42, 0.16);
-  --text: #0f172a;
-  --text-muted: #54657c;
+  --canvas: #E8ECEF;        /* mist */
+  --surface-0: #FFFFFF;
+  --surface-1: #FFFFFF;
+  --surface-2: #EEF2F5;     /* cloud */
+  --surface-3: #E8ECEF;
+  --hairline: rgba(15, 20, 26, 0.07);
+  --hairline-strong: rgba(15, 20, 26, 0.22);
+  --text: #0F141A;          /* ink */
+  --text-muted: #55616E;    /* slate */
+  --flow: #10306B;          /* navy-700 accent on light */
+  --accent: #10306B;
+  --teal: #10306B;
+  --raouf-blue: #10306B;
+  --gold: #8A5B12;          /* warning-ink — AA fix (2.08:1 → >4.5:1) */
+  --signal: #6CCB3E;
 }
+html.light .btn-primary { background: #10306B; color: #FFFFFF; }
 html.light .mesh-bg {
   background:
-    radial-gradient(58% 48% at 12% -6%, rgba(22, 194, 176, 0.10), transparent 70%),
-    radial-gradient(48% 40% at 96% 4%, rgba(43, 108, 255, 0.07), transparent 70%),
-    radial-gradient(42% 32% at 62% 104%, rgba(224, 178, 58, 0.06), transparent 70%),
+    radial-gradient(58% 48% at 12% -6%, rgba(143, 224, 90, 0.07), transparent 70%),
+    radial-gradient(48% 40% at 96% 4%, rgba(91, 138, 212, 0.08), transparent 70%),
+    radial-gradient(42% 32% at 62% 104%, rgba(154, 189, 232, 0.10), transparent 70%),
     var(--canvas);
 }
 html.light .glass-panel {
@@ -150,12 +179,12 @@ html.light .glass-panel {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.7), 0 14px 40px -28px rgba(15, 23, 42, 0.28);
 }
 html.light .grad-text {
-  background: linear-gradient(135deg, #0f766e 0%, var(--flow) 45%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #10306B 0%, #1C75BC 55%, #5D8AD4 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 html.light .btn-ghost { background: rgba(15, 23, 42, 0.03); }
 html.light .badge { background: rgba(15, 23, 42, 0.03); }
-[dir="rtl"] .grad-text { background: linear-gradient(225deg, #eaf7f5 0%, var(--flow) 58%, #9fe9df 100%); -webkit-background-clip: text; background-clip: text; }
+[dir="rtl"] .grad-text { background: linear-gradient(225deg, #C4E8B4 0%, #9BC0F2 58%, #8FB4E4 100%); -webkit-background-clip: text; background-clip: text; }
 
 /* signature flow animation on circuit lines */
 .flow-dash { stroke-dasharray: 5 11; animation: flow-dash 1.1s linear infinite; }
@@ -169,7 +198,8 @@ html.light .badge { background: rgba(15, 23, 42, 0.03); }
 .wiggle-hint { animation: wiggle 2s ease-in-out infinite; }
 @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
 
-:focus-visible { outline: 2px solid var(--flow); outline-offset: 2px; }
+:focus-visible { outline: 2px solid #8FE05A; outline-offset: 2px; }
+html.light :focus-visible { outline-color: #10306B; }
 
 @media (max-width: 768px) {
   input[type="range"] { min-height: 28px; }

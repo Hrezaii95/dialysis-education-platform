@@ -140,9 +140,11 @@ const VOLUME_TARGET = 23; // ≥23 L to pass
 function StepRail({
   current,
   completed,
+  onStepSelect,
 }: {
   current: StepKey;
   completed: Set<StepKey>;
+  onStepSelect: (step: StepKey) => void;
 }) {
   const { t } = useLang();
   return (
@@ -155,23 +157,27 @@ function StepRail({
         const isActive = key === current;
         return (
           <span key={key} className="flex items-center gap-1.5">
-            <span
+            <button
+              type="button"
+              aria-current={isActive ? "step" : undefined}
+              onClick={() => onStepSelect(key)}
               className={[
                 "inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flow/60",
                 isActive
                   ? "bg-flow/20 text-flow ring-1 ring-flow/40"
                   : isDone
-                  ? "bg-emerald-500/15 text-emerald-400"
-                  : "bg-surface-2 text-muted",
+                  ? "bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25"
+                  : "bg-surface-2 text-muted hover:bg-surface-2/80 hover:text-foreground",
               ].join(" ")}
             >
               {isDone && !isActive && (
                 <CheckCircle2 className="h-3 w-3 text-emerald-400" />
               )}
               {i + 1}. {t(STEP_I18N[key], STEP_LABELS[key])}
-            </span>
+            </button>
             {i < STEP_KEYS.length - 1 && (
-              <ArrowRight className="h-3 w-3 shrink-0 text-muted" />
+              <ArrowRight className="h-3 w-3 shrink-0 text-muted" aria-hidden="true" />
             )}
           </span>
         );
@@ -863,6 +869,11 @@ function DeviceConfiguratorInner() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  const goToStep = useCallback((step: StepKey) => {
+    setCurrentStep(step);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
+
   const handleComplete = useCallback(() => {
     setCompletedSteps(new Set(STEP_KEYS));
     setMastered(true);
@@ -926,7 +937,11 @@ function DeviceConfiguratorInner() {
 
         {/* Step rail */}
         <div className="mt-4">
-          <StepRail current={currentStep} completed={completedSteps} />
+          <StepRail
+            current={currentStep}
+            completed={completedSteps}
+            onStepSelect={goToStep}
+          />
         </div>
       </header>
 

@@ -9,6 +9,7 @@ import { emitStatement } from "@/lib/xapi";
 import { usePlatformStore } from "@/lib/store";
 import { cn } from "@/lib/utils";
 import { Award, Check, X, BookOpen } from "lucide-react";
+import { useLang } from "@/components/providers/LanguageProvider";
 
 // ── types ──────────────────────────────────────────────────────────────────
 
@@ -88,6 +89,7 @@ function computeResults(
 // ── component ──────────────────────────────────────────────────────────────
 
 export default function AssessmentPage() {
+  const { t } = useLang();
   const [pool, setPool] = useState(() => shuffleArray(CREDENTIAL_QUIZ));
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
@@ -198,28 +200,28 @@ export default function AssessmentPage() {
             <Award className="h-12 w-12" />
           </div>
           <h1 className="text-2xl font-semibold">
-            {didPass ? "Credential Earned" : "Assessment Incomplete"}
+            {didPass ? t("assess.passed", "Credential Earned") : t("assess.failed", "Assessment Incomplete")}
           </h1>
           <p className="text-muted">
-            Score: {finalScore}/{pool.length} ({finalPct}%) —{" "}
-            {didPass ? "≥80% required ✓" : "Retake to earn credential"}
+            {t("assess.scorePrefix", "Score:")} {finalScore}/{pool.length} ({finalPct}%) —{" "}
+            {didPass ? t("assess.passNote", "≥80% required ✓") : t("assess.failNote", "Retake to earn credential")}
           </p>
         </div>
 
         {/* certificate panel (pass only) */}
         {didPass && (
           <div className="glass-panel p-6 text-left text-sm space-y-2">
-            <div className="font-semibold">Certified: Competent — In-center HDF Nurse</div>
+            <div className="font-semibold">{t("assess.cert.title", "Certified: Competent — In-center HDF Nurse")}</div>
             <p className="text-xs text-muted">
-              Certified to a stated level (per the My Path depth dial) — not a participation pass.
+              {t("assess.cert.note", "Certified to a stated level (per the My Path depth dial) — not a participation pass.")}
             </p>
-            <div className="mt-2 border-t border-white/8 pt-2 font-semibold">xAPI Record Issued</div>
+            <div className="mt-2 border-t border-white/8 pt-2 font-semibold">{t("assess.cert.xapi", "xAPI Record Issued")}</div>
             <p className="text-muted">
-              Verb: mastered · Object: Raouf HDF Clinical Credential · Timestamp:{" "}
+              {t("assess.cert.verb", "Verb: mastered · Object: Raouf HDF Clinical Credential · Timestamp:")}{" "}
               {new Date().toISOString()}
             </p>
             <p className="text-xs text-muted">
-              xAPI-compatible · integrates with compliant LMS environments
+              {t("assess.cert.compat", "xAPI-compatible · integrates with compliant LMS environments")}
             </p>
           </div>
         )}
@@ -229,7 +231,7 @@ export default function AssessmentPage() {
           <>
             {/* per-competency breakdown */}
             <div className="glass-panel p-5 space-y-3">
-              <h2 className="font-semibold text-sm">Competency analysis</h2>
+              <h2 className="font-semibold text-sm">{t("assess.analysis.title", "Competency analysis")}</h2>
               {weakestComp && (
                 <p className="text-xs text-danger">
                   Weakest: {weakestComp.code} —{" "}
@@ -263,7 +265,7 @@ export default function AssessmentPage() {
 
               {/* knowledge-type summary */}
               <div className="pt-2 border-t border-white/8">
-                <p className="text-xs text-muted mb-1">Knowledge-type breakdown</p>
+                <p className="text-xs text-muted mb-1">{t("assess.analysis.ktTitle", "Knowledge-type breakdown")}</p>
                 <div className="flex gap-3 flex-wrap">
                   {KT_ORDER.map((kt) => {
                     const { total, correct } = byKt[kt];
@@ -287,7 +289,7 @@ export default function AssessmentPage() {
               <div className="glass-panel p-5 space-y-3">
                 <h2 className="font-semibold text-sm flex items-center gap-2">
                   <BookOpen className="h-4 w-4 text-accent" />
-                  Recommended review
+                  {t("assess.review.title", "Recommended review")}
                 </h2>
                 <ul className="space-y-2">
                   {weakComps.map((c) => (
@@ -301,7 +303,7 @@ export default function AssessmentPage() {
                           {c.title}
                           {c.weakestKt && (
                             <span className="ml-2 text-xs text-muted">
-                              · focus: {KNOWLEDGE_LABEL[c.weakestKt]}
+                              {t("assess.review.focus", "· focus:")} {KNOWLEDGE_LABEL[c.weakestKt]}
                             </span>
                           )}
                         </span>
@@ -314,7 +316,7 @@ export default function AssessmentPage() {
             )}
 
             <button type="button" className="btn btn-primary w-full" onClick={handleRetake}>
-              Retake assessment (gap-targeted)
+              {t("assess.retake", "Retake assessment (gap-targeted)")}
             </button>
           </>
         )}
@@ -327,9 +329,11 @@ export default function AssessmentPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-6">
       <header>
-        <h1 className="text-2xl font-semibold">Clinical Credential Assessment</h1>
+        <h1 className="text-2xl font-semibold">{t("assess.title", "Clinical Credential Assessment")}</h1>
         <p className="mt-1 text-sm text-muted">
-          Question {index + 1} of {pool.length} · Proctored mastery gate
+          {t("assess.progress", "Question {n} of {total} · Proctored mastery gate")
+            .replace("{n}", String(index + 1))
+            .replace("{total}", String(pool.length))}
         </p>
         <div className="mt-3 h-1.5 rounded-full bg-surface-2">
           <div
@@ -373,7 +377,9 @@ export default function AssessmentPage() {
           <div className="mt-6 rounded-lg bg-surface-2 p-4 text-sm">
             <p>{q.explain}</p>
             <button type="button" className="btn btn-primary mt-4 text-sm" onClick={next}>
-              {index < pool.length - 1 ? "Next question →" : "View results"}
+              {index < pool.length - 1
+                ? t("assess.explain.next", "Next question →")
+                : t("assess.explain.viewResults", "View results")}
             </button>
           </div>
         )}

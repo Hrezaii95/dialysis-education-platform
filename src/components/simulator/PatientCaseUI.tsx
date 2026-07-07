@@ -28,7 +28,7 @@ export function VitalsMonitor({
   return (
     <div className="rounded-xl border border-white/10 bg-black p-4 font-mono text-sm shadow-inner">
       <div className="flex items-center justify-between border-b border-white/10 pb-2 mb-3">
-        <span className="text-teal-400 text-xs">PATIENT MONITOR</span>
+        <span className="text-flow text-xs">PATIENT MONITOR</span>
         <span className={cn("text-xs", physics.alarm ? "text-red-400 alarm-pulse" : "text-green-400")}>
           {physics.alarm ? "ALARM" : "STABLE"}
         </span>
@@ -39,11 +39,11 @@ export function VitalsMonitor({
         <Vital label="SpO₂" value={String(spo2)} unit="%" color="text-sky-400" />
         <Vital label="TMP" value={physics.tmp.toFixed(0)} unit="mmHg" color={physics.tmp > 400 ? "text-red-400" : "text-amber-300"} />
         <Vital label="Qb" value={String(qb)} unit="mL/min" color="text-white" />
-        <Vital label="Qf" value={String(convection)} unit="L" color="text-teal-300" />
+        <Vital label="Qf" value={String(convection)} unit="L" color="text-flow" />
       </div>
       <div className="mt-3 grid grid-cols-3 gap-2 text-[10px]">
         <Bar label="Clearance" value={physics.clearanceIndex} max={100} color="bg-accent" />
-        <Bar label="QoL idx" value={physics.qolIndex} max={100} color="bg-teal-500" />
+        <Bar label="QoL idx" value={physics.qolIndex} max={100} color="bg-flow" />
         <Bar label="IDH risk" value={physics.hypotensionRisk} max={100} color="bg-red-500" />
       </div>
     </div>
@@ -130,7 +130,7 @@ export function DecisionCard({
       <div className="font-medium text-sm">{title}</div>
       <p className="mt-1 text-xs text-muted">{description}</p>
       {consequence && (
-        <p className="mt-2 text-[10px] text-teal-400/80 border-l-2 border-teal-500/40 pl-2">{consequence}</p>
+        <p className="mt-2 text-[10px] text-flow/80 border-l-2 border-flow/40 pl-2">{consequence}</p>
       )}
     </button>
   );

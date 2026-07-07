@@ -254,7 +254,7 @@ function IDHMonitor({ v, alarm }: { v: Vitals; alarm: boolean }) {
   return (
     <div className="rounded-xl border border-white/10 bg-black p-4 font-mono text-sm shadow-inner">
       <div className="mb-3 flex items-center justify-between border-b border-white/10 pb-2">
-        <span className="text-xs text-teal-400">{t("idh.monitor.label", "PATIENT MONITOR")} · t={v.t}min</span>
+        <span className="text-xs text-flow">{t("idh.monitor.label", "PATIENT MONITOR")} · t={v.t}min</span>
         <span className={cn("text-xs", alarm ? "text-red-400 alarm-pulse" : v.tone === "warn" ? "text-amber-300" : "text-green-400")}>
           {statusLabel}
         </span>

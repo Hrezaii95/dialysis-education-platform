@@ -21,16 +21,25 @@ import type { Audience } from "@/lib/competencies";
 import { useRole } from "@/components/onboarding/useRole";
 import { FirstImpression } from "@/components/onboarding/FirstImpression";
 import { ScrollHero } from "@/components/home/ScrollHero";
+import { useLang } from "@/components/providers/LanguageProvider";
 
 // ── Static data ───────────────────────────────────────────────────────────────
 
 const DIFFERENTIATORS = [
-  { icon: Cpu, title: "3D 5008 / HDF setup", desc: "Explore and sequence the machine in 3D — no competitor has a HD/HDF device sim.", color: "text-flow" },
-  { icon: HeartPulse, title: "Symptom-driven patient sim", desc: "Branching intradialytic crises with safe-failure feedback and debrief.", color: "text-danger" },
-  { icon: LineChart, title: "Evidence outcome sim", desc: "Compare HV-HDF vs conventional HD on real trial effect sizes.", color: "text-gold" },
-  { icon: Languages, title: "Farsi-first / RTL", desc: "Every module flips to Persian — absent from every vendor academy today.", color: "text-flow" },
-  { icon: ShieldCheck, title: "Vendor-neutral & on-prem", desc: "Self-hostable inside the hospital — sanctions-safe, no cloud lock-in.", color: "text-success" },
-];
+  { icon: Cpu, key: "3d", color: "text-flow" },
+  { icon: HeartPulse, key: "sim", color: "text-danger" },
+  { icon: LineChart, key: "evidence", color: "text-gold" },
+  { icon: Languages, key: "farsi", color: "text-flow" },
+  { icon: ShieldCheck, key: "onprem", color: "text-success" },
+] as const;
+
+const DIFF_FALLBACK: Record<(typeof DIFFERENTIATORS)[number]["key"], { title: string; desc: string }> = {
+  "3d": { title: "3D 5008 / HDF setup", desc: "Explore and sequence the machine in 3D — no competitor has a HD/HDF device sim." },
+  sim: { title: "Symptom-driven patient sim", desc: "Branching intradialytic crises with safe-failure feedback and debrief." },
+  evidence: { title: "Evidence outcome sim", desc: "Compare HV-HDF vs conventional HD on real trial effect sizes." },
+  farsi: { title: "Farsi-first / RTL", desc: "Every module flips to Persian — absent from every vendor academy today." },
+  onprem: { title: "Vendor-neutral & on-prem", desc: "Self-hostable inside the hospital — sanctions-safe, no cloud lock-in." },
+};
 
 // ── Hero circuit (unchanged from original) ────────────────────────────────────
 
@@ -80,6 +89,7 @@ function HeroCircuit() {
 
 function RolePicker({ onPick }: { onPick: (r: Audience) => void }) {
   const [hovered, setHovered] = useState<Audience | null>(null);
+  const { t } = useLang();
 
   return (
     <motion.div
@@ -90,13 +100,13 @@ function RolePicker({ onPick }: { onPick: (r: Audience) => void }) {
     >
       <div className="text-center space-y-2">
         <span className="badge badge-flow">
-          <Sparkles className="h-3.5 w-3.5" /> 60-second setup
+          <Sparkles className="h-3.5 w-3.5" /> {t("home.badge.60sec", "60-second setup")}
         </span>
         <h2 className="font-display text-2xl sm:text-3xl tracking-tight">
-          Who are you here as?
+          {t("home.role.title", "Who are you here as?")}
         </h2>
         <p className="text-sm text-muted">
-          Your path, depth targets, and first exercises adapt to your role.
+          {t("home.role.subtitle", "Your path, depth targets, and first exercises adapt to your role.")}
         </p>
       </div>
 
@@ -120,7 +130,7 @@ function RolePicker({ onPick }: { onPick: (r: Audience) => void }) {
       </div>
 
       <p className="text-center text-[11px] text-muted">
-        Language switch is in the header — you can change role anytime.
+        {t("home.role.langHint", "Language switch is in the header — you can change role anytime.")}
       </p>
     </motion.div>
   );
@@ -135,6 +145,7 @@ function ReturningUser({
   role: Audience;
   onReplay: () => void;
 }) {
+  const { t } = useLang();
   const label = AUDIENCES.find((a) => a.id === role)?.label ?? role;
 
   return (
@@ -146,31 +157,55 @@ function ReturningUser({
     >
       <div>
         <span className="badge badge-flow">
-          <Activity className="h-3.5 w-3.5" /> Continuing as {label}
+          <Activity className="h-3.5 w-3.5" />{" "}
+          {t("home.return.badge", "Continuing as {label}").replace("{label}", label)}
         </span>
         <h1 className="mt-3 font-display text-4xl font-normal leading-[1.05] tracking-tight sm:text-5xl">
-          The first interactive{" "}
-          <span className="grad-text">HDF training</span>{" "}
-          built for your dialysis unit
+          {(() => {
+            const full = t(
+              "home.return.h1",
+              "The first interactive HDF training built for your dialysis unit"
+            );
+            const parts = full.split("HDF training");
+            if (parts.length === 2) {
+              return (
+                <>
+                  {parts[0]}
+                  <span className="grad-text">HDF training</span>
+                  {parts[1]}
+                </>
+              );
+            }
+            return full;
+          })()}
         </h1>
         <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
-          Hands-on machine setup, branching patient crises, and cited HV-HDF evidence — in Persian and English.
+          {t(
+            "home.return.p",
+            "Hands-on machine setup, branching patient crises, and cited HV-HDF evidence — in Persian and English."
+          )}
         </p>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
         <Link href="/my-path" className="btn btn-primary">
-          Start your path <ArrowRight className="h-4 w-4" />
+          {t("home.return.cta.start", "Start your path")} <ArrowRight className="h-4 w-4" />
         </Link>
         <button onClick={onReplay} className="btn btn-ghost text-sm">
-          <RefreshCw className="h-3.5 w-3.5" /> Replay first impression
+          <RefreshCw className="h-3.5 w-3.5" /> {t("home.return.cta.replay", "Replay first impression")}
         </button>
       </div>
 
       <div className="flex flex-wrap gap-x-7 gap-y-2 text-xs text-muted">
-        <span className="inline-flex items-center gap-1.5"><Box className="h-3.5 w-3.5 text-flow" /> 5008 / HDF in 3D</span>
-        <span className="inline-flex items-center gap-1.5"><Languages className="h-3.5 w-3.5 text-flow" /> Persian + English</span>
-        <span className="inline-flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-flow" /> Runs inside the hospital</span>
+        <span className="inline-flex items-center gap-1.5">
+          <Box className="h-3.5 w-3.5 text-flow" /> {t("home.return.feat.3d", "5008 / HDF in 3D")}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <Languages className="h-3.5 w-3.5 text-flow" /> {t("home.return.feat.fa", "Persian + English")}
+        </span>
+        <span className="inline-flex items-center gap-1.5">
+          <ShieldCheck className="h-3.5 w-3.5 text-flow" /> {t("home.return.feat.onprem", "Runs inside the hospital")}
+        </span>
       </div>
     </motion.div>
   );
@@ -185,6 +220,7 @@ type PagePhase =
   | "returning";    // role exists + impression already seen
 
 export default function Home() {
+  const { t } = useLang();
   const [role, setRole] = useRole();
   // null = still reading localStorage; loaded once effect fires
   const [phase, setPhase] = useState<PagePhase>("loading");
@@ -262,8 +298,8 @@ export default function Home() {
             className="glass-panel relative overflow-hidden p-5"
           >
             <div className="mb-3 flex items-center justify-between">
-              <span className="badge"><Activity className="h-3 w-3 text-flow" /> Live circuit</span>
-              <span className="text-[10px] uppercase tracking-widest text-muted">HV-HDF · online</span>
+              <span className="badge"><Activity className="h-3 w-3 text-flow" /> {t("home.livecircuit", "Live circuit")}</span>
+              <span className="text-[10px] uppercase tracking-widest text-muted">{t("home.hvhdf.online", "HV-HDF · online")}</span>
             </div>
             <HeroCircuit />
           </motion.div>
@@ -283,15 +319,29 @@ export default function Home() {
           {/* Compact hero headline above the sequence */}
           <div className="mb-6 text-center space-y-2">
             <span className="badge badge-flow">
-              <Sparkles className="h-3.5 w-3.5" /> Vendor-neutral · Farsi-first · on-prem
+              <Sparkles className="h-3.5 w-3.5" /> {t("home.impression.badge", "Vendor-neutral · Farsi-first · on-prem")}
             </span>
             <h1 className="font-display text-3xl font-normal tracking-tight sm:text-4xl">
-              The first interactive{" "}
-              <span className="grad-text">HDF training</span>{" "}
-              built for your dialysis unit
+              {(() => {
+                const full = t(
+                  "home.return.h1",
+                  "The first interactive HDF training built for your dialysis unit"
+                );
+                const parts = full.split("HDF training");
+                if (parts.length === 2) {
+                  return (
+                    <>
+                      {parts[0]}
+                      <span className="grad-text">HDF training</span>
+                      {parts[1]}
+                    </>
+                  );
+                }
+                return full;
+              })()}
             </h1>
             <p className="text-sm text-muted max-w-xl mx-auto">
-              Two quick steps — then your personalised path is ready.
+              {t("home.impression.p", "Two quick steps — then your personalised path is ready.")}
             </p>
           </div>
           <FirstImpression onFinish={handleImpressionFinish} />
@@ -302,13 +352,13 @@ export default function Home() {
       {(phase === "returning" || phase === "loading") && (
         <section>
           <div className="mb-6">
-            <h2 className="font-display text-2xl tracking-tight sm:text-3xl">What no one else has</h2>
-            <p className="mt-1 text-sm text-muted">Every box below is a documented gap in today&apos;s renal academies.</p>
+            <h2 className="font-display text-2xl tracking-tight sm:text-3xl">{t("home.diff.title", "What no one else has")}</h2>
+            <p className="mt-1 text-sm text-muted">{t("home.diff.subtitle", "Every box below is a documented gap in today's renal academies.")}</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {DIFFERENTIATORS.map((d, i) => (
               <motion.div
-                key={d.title}
+                key={d.key}
                 initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -316,8 +366,12 @@ export default function Home() {
                 className="glass-panel card-hover p-5"
               >
                 <d.icon className={`h-6 w-6 ${d.color}`} />
-                <h3 className="mt-3 text-[15px] font-semibold">{d.title}</h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-muted">{d.desc}</p>
+                <h3 className="mt-3 text-[15px] font-semibold">
+                  {t(`home.diff.${d.key}.title`, DIFF_FALLBACK[d.key].title)}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">
+                  {t(`home.diff.${d.key}.desc`, DIFF_FALLBACK[d.key].desc)}
+                </p>
               </motion.div>
             ))}
           </div>
@@ -329,21 +383,21 @@ export default function Home() {
         <section className="glass-panel overflow-hidden">
           <div className="grid sm:grid-cols-2">
             <div className="border-b border-white/8 p-6 sm:border-b-0 sm:border-r">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-muted">Today&apos;s vendor academies</span>
+              <span className="text-[11px] font-semibold uppercase tracking-widest text-muted">{t("home.gap.today", "Today's vendor academies")}</span>
               <ul className="mt-3 space-y-2 text-sm text-muted">
-                <li>— Slides, video, webinars</li>
-                <li>— English only (zero Farsi)</li>
-                <li>— Watch, don&apos;t practice</li>
-                <li>— Device-captive marketing</li>
+                <li>— {t("home.gap.today.1", "Slides, video, webinars")}</li>
+                <li>— {t("home.gap.today.2", "English only (zero Farsi)")}</li>
+                <li>— {t("home.gap.today.3", "Watch, don't practice")}</li>
+                <li>— {t("home.gap.today.4", "Device-captive marketing")}</li>
               </ul>
             </div>
             <div className="p-6">
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-flow">Raouf Renal Academy</span>
+              <span className="text-[11px] font-semibold uppercase tracking-widest text-flow">{t("home.gap.raouf", "Raouf Renal Academy")}</span>
               <ul className="mt-3 space-y-2 text-sm">
-                <li className="text-text">+ Interactive 3D &amp; branching sims</li>
-                <li className="text-text">+ Persian + English, RTL-native</li>
-                <li className="text-text">+ Practice with safe-failure feedback</li>
-                <li className="text-text">+ Vendor-neutral, evidence-cited</li>
+                <li className="text-text">+ {t("home.gap.raouf.1", "Interactive 3D & branching sims")}</li>
+                <li className="text-text">+ {t("home.gap.raouf.2", "Persian + English, RTL-native")}</li>
+                <li className="text-text">+ {t("home.gap.raouf.3", "Practice with safe-failure feedback")}</li>
+                <li className="text-text">+ {t("home.gap.raouf.4", "Vendor-neutral, evidence-cited")}</li>
               </ul>
             </div>
           </div>
@@ -351,7 +405,7 @@ export default function Home() {
       )}
 
       <p className="text-center text-xs text-muted">
-        Educational simulation only — not for clinical prescription or FDA-cleared decision support.
+        {t("home.disclaimer", "Educational simulation only — not for clinical prescription or FDA-cleared decision support.")}
       </p>
     </div>
   );

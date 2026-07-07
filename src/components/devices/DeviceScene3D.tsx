@@ -122,7 +122,8 @@ function Machine5008({
         <meshStandardMaterial color="#0d9488" metalness={0.4} roughness={0.4} />
       </mesh>
       <Html position={[-0.35, -0.85, 0.35]} center>
-        <span className="rounded bg-teal-900/90 px-1.5 py-0.5 text-[9px] text-teal-100">DIASAFE®plus</span>
+        {/* HTML overlay label (not a 3D material) — brand blue, retiring the legacy teal chip to match the DIASAFE legend swatch in app/devices/page.tsx */}
+        <span className="rounded bg-blue-900/90 px-1.5 py-0.5 text-[9px] text-blue-100">DIASAFE®plus</span>
       </Html>
 
       {/* Substitution ONLINE port */}

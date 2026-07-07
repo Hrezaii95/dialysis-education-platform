@@ -42,13 +42,19 @@ const DeviceScene3D = dynamic(
 );
 
 // --- locked to two profiles only (hero HDF + comparison HD-only) ---
+// Colors below tint the 3D device model (Bucket A — physical scene material,
+// see design-preview/component-map.md §3) and MUST stay hardcoded hex (three.js
+// material props can't consume CSS custom properties). Bucket-B reconciliation
+// (S4/P3): re-tuned from the retired teal scheme to the Locked Pulse-R palette
+// (design-preview/design-system/tokens/colors.css) so the hues agree with the
+// rest of the re-skinned chrome.
 const SYSTEMS = [
-  { id: "4008s", name: "4008S", label: "4008S", color: "#6b7280", hdf: false },
+  { id: "4008s", name: "4008S", label: "4008S", color: "#8A95A1", hdf: false }, // brand --gray-400
   {
     id: "5008s",
     name: "5008S CorDiax",
     label: "5008S",
-    color: "#2b6cff",
+    color: "#5D8AD4", // brand --blue-400 (was legacy --raouf-blue #2b6cff)
     hdf: true,
   },
 ];
@@ -58,23 +64,23 @@ const DIALYZERS = [
     id: "fx_highflux",
     name: "High-flux",
     convective: 60,
-    color: "#9ca3af",
+    color: "#8A95A1", // brand --gray-400
     area: "1.8 m²",
   },
   {
     id: "fx_coral",
     name: "FX CorAL",
     convective: 88,
-    color: "#e0b23a",
+    color: "#E39A3B", // brand --caution / --gold (was legacy #e0b23a)
     area: "2.0 m²",
   },
 ];
 
 const LEGEND = [
-  { c: "#fb7185", t: "Arterial / venous lines" },
-  { c: "#16c2b0", t: "DIASAFE®plus ultrafilter" },
-  { c: "#e0b23a", t: "Hollow-fiber dialyzer" },
-  { c: "#22c55e", t: "AutoSub substitution port" },
+  { c: "#fb7185", t: "Arterial / venous lines" }, // Bucket A — physical blood color, unchanged
+  { c: "#9BC0F2", t: "DIASAFE®plus ultrafilter" }, // brand --blue-200 (was legacy teal #16c2b0 — retired)
+  { c: "#E39A3B", t: "Hollow-fiber dialyzer" }, // brand --caution / --gold (was legacy #e0b23a)
+  { c: "#2E8E54", t: "AutoSub substitution port" }, // brand --in-range / --success (was generic #22c55e)
 ];
 
 // --- guided step definitions ---
@@ -94,73 +100,35 @@ const STEP_LABELS: Record<StepKey, string> = {
   signoff: "Sign-off",
 };
 
-// --- Prime step: checklist items ---
+const STEP_I18N: Record<StepKey, string> = {
+  explore: "deviceLab.step.explore",
+  prime: "deviceLab.step.prime",
+  prescribe: "deviceLab.step.prescribe",
+  alarms: "deviceLab.step.alarm",
+  signoff: "deviceLab.step.gate",
+};
+
+// --- Prime step: checklist items (labels via i18n in component) ---
 interface PrimeItem {
-  id: string;
-  label: string;
+  id: "diasafe" | "onlineLine" | "rinseback";
   correct: boolean;
-  explanation: string;
 }
 const PRIME_ITEMS: PrimeItem[] = [
-  {
-    id: "diasafe",
-    label: "DIASAFE®plus ultrafilter installed on substitution outlet",
-    correct: true,
-    explanation:
-      "The DIASAFE®plus ultrafilter is mandatory for online-HDF — it sterilises substitution fluid to pharmaceutical-grade. Without it, online HDF is contraindicated. (IFU-pending)",
-  },
-  {
-    id: "online_line",
-    label: "Online substitution-fluid line connected to AutoSub port",
-    correct: true,
-    explanation:
-      "The substitution line routes ultrapure fluid post-dialyser for post-dilution HDF. Confirming the line is in place is a pre-treatment safety check. (IFU-pending)",
-  },
-  {
-    id: "rinseback",
-    label: "Rinseback saline bag connected as substitution source",
-    correct: false,
-    explanation:
-      "Rinseback saline is used for end-of-treatment blood return — not for substitution fluid. Online-HDF substitution must come from the machine's own ultrafiltered water pathway, not an external bag.",
-  },
+  { id: "diasafe", correct: true },
+  { id: "onlineLine", correct: true },
+  { id: "rinseback", correct: false },
 ];
 
 // --- Alarms step ---
 interface AlarmOption {
-  id: string;
-  label: string;
+  id: "checkKink" | "increaseQb" | "ignore" | "stop";
   correct: boolean;
-  consequence: string;
 }
 const ALARM_OPTIONS: AlarmOption[] = [
-  {
-    id: "check_kink",
-    label: "Inspect the venous return line for kinks or occlusion and clear",
-    correct: true,
-    consequence:
-      "Correct. A kinked venous line is the most common mechanical cause of acute TMP rise. Clearing the occlusion restores venous outflow, drops TMP, and allows treatment to continue safely.",
-  },
-  {
-    id: "increase_qb",
-    label: "Increase blood flow (QB) to overcome the pressure",
-    correct: false,
-    consequence:
-      "Incorrect. Increasing QB against an occlusion raises TMP further and risks clotting the dialyser or rupturing the venous line. The mechanical cause must be resolved first.",
-  },
-  {
-    id: "ignore",
-    label: "Silence the alarm and continue — TMP alarms are often transient",
-    correct: false,
-    consequence:
-      "Incorrect. TMP alarms should never be silenced without investigation. An unresolved TMP rise can progress to haemofilter clotting, circuit loss, or (if a membrane rupture is present) patient harm.",
-  },
-  {
-    id: "stop_treatment",
-    label: "Stop treatment immediately and call the nephrologist",
-    correct: false,
-    consequence:
-      "Partially correct as an escalation step, but premature without first inspecting for a simple mechanical cause. A brief systematic check (line, clamps, patient arm position) usually resolves the alarm without interrupting treatment.",
-  },
+  { id: "checkKink", correct: true },
+  { id: "increaseQb", correct: false },
+  { id: "ignore", correct: false },
+  { id: "stop", correct: false },
 ];
 
 // --- convective volume simulation ---
@@ -176,6 +144,7 @@ function StepRail({
   current: StepKey;
   completed: Set<StepKey>;
 }) {
+  const { t } = useLang();
   return (
     <nav
       aria-label="Guided steps"
@@ -199,7 +168,7 @@ function StepRail({
               {isDone && !isActive && (
                 <CheckCircle2 className="h-3 w-3 text-emerald-400" />
               )}
-              {i + 1}. {STEP_LABELS[key]}
+              {i + 1}. {t(STEP_I18N[key], STEP_LABELS[key])}
             </span>
             {i < STEP_KEYS.length - 1 && (
               <ArrowRight className="h-3 w-3 shrink-0 text-muted" />
@@ -255,7 +224,7 @@ function ExploreStep({
           {/* on-canvas legend */}
           <div className="pointer-events-none absolute left-4 top-4 hidden rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-md sm:block">
             <div className="mb-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted">
-              <Rotate3d className="h-3 w-3" /> Drag to rotate
+              <Rotate3d className="h-3 w-3" /> {t("deviceLab.dragRotate", "Drag to rotate")}
             </div>
             <ul className="space-y-1">
               {LEGEND.map((l) => (
@@ -278,10 +247,10 @@ function ExploreStep({
         <div className="space-y-4 lg:col-span-2">
           <div className="glass-panel p-5">
             <h3 className="mb-1 flex items-center gap-2 font-semibold">
-              <Layers className="h-4 w-4 text-flow" /> System
+              <Layers className="h-4 w-4 text-flow" /> {t("deviceLab.system.title", "System")}
             </h3>
             <p className="mb-3 text-xs text-muted">
-              Switch generation — note which supports online-HDF.
+              {t("deviceLab.system.subtitle", "Switch generation — note which supports online-HDF.")}
             </p>
             <div className="flex flex-wrap gap-2">
               {SYSTEMS.map((s) => (
@@ -298,7 +267,7 @@ function ExploreStep({
                 >
                   {s.name}
                   {!s.hdf && (
-                    <span className="ml-1 opacity-60">· HD only</span>
+                    <span className="ml-1 opacity-60">{t("deviceLab.system.hdOnly", "· HD only")}</span>
                   )}
                 </button>
               ))}
@@ -315,7 +284,7 @@ function ExploreStep({
 
           <div className="glass-panel p-5">
             <h3 className="mb-3 flex items-center gap-2 font-semibold">
-              <Droplets className="h-4 w-4 text-gold" /> Dialyzer
+              <Droplets className="h-4 w-4 text-gold" /> {t("deviceLab.dialyzer.title", "Dialyzer")}
             </h3>
             <div className="flex flex-wrap gap-2">
               {DIALYZERS.map((d) => (
@@ -349,8 +318,8 @@ function ExploreStep({
           {/* convection teaching layer */}
           <div className="glass-panel p-5">
             <div className="mb-2 flex items-center justify-between">
-              <h3 className="font-semibold">Convective clearance</h3>
-              <span className="text-[11px] text-muted">educational</span>
+              <h3 className="font-semibold">{t("deviceLab.conv.title", "Convective clearance")}</h3>
+              <span className="text-[11px] text-muted">{t("deviceLab.conv.educational", "educational")}</span>
             </div>
             <div className="h-2.5 w-full overflow-hidden rounded-full bg-surface-2">
               <div
@@ -360,20 +329,26 @@ function ExploreStep({
             </div>
             <p className="mt-2 text-xs text-muted">
               {system.hdf
-                ? "Online-HDF adds convection to remove middle molecules diffusion alone misses."
-                : "HD only — diffusive clearance, no convective component."}
+                ? t(
+                    "deviceLab.conv.hdfNote",
+                    "Online-HDF adds convection to remove middle molecules diffusion alone misses."
+                  )
+                : t(
+                    "deviceLab.conv.hdNote",
+                    "HD only — diffusive clearance, no convective component."
+                  )}
             </p>
             <Link
               href="/convince"
               className="mt-3 inline-flex items-center gap-1 text-xs text-gold transition-all hover:gap-2"
             >
-              <Sparkles className="h-3.5 w-3.5" /> Evidence: high-volume HDF &
-              CONVINCE <ArrowRight className="h-3.5 w-3.5" />
+              <Sparkles className="h-3.5 w-3.5" /> {t("deviceLab.conv.evidence", "Evidence: high-volume HDF & CONVINCE")}{" "}
+              <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
 
           <div className="glass-panel p-5 text-sm">
-            <h3 className="mb-2 font-semibold">This configuration</h3>
+            <h3 className="mb-2 font-semibold">{t("deviceLab.config.title", "This configuration")}</h3>
             <ul className="space-y-1 text-xs text-muted">
               {features.map((f) => (
                 <li key={f} className="flex items-center gap-1.5">
@@ -387,7 +362,7 @@ function ExploreStep({
 
       <div className="mt-6 flex justify-end">
         <button type="button" className="btn btn-primary gap-1.5" onClick={onNext}>
-          Continue to Prime <ChevronRight className="h-4 w-4" />
+          {t("deviceLab.explore.continue", "Continue to Prime")} <ChevronRight className="h-4 w-4" />
         </button>
       </div>
     </>
@@ -396,6 +371,7 @@ function ExploreStep({
 
 // ─── Prime step ───────────────────────────────────────────────────────────
 function PrimeStep({ onNext }: { onNext: () => void }) {
+  const { t } = useLang();
   const [selections, setSelections] = useState<Record<string, boolean | null>>(
     {}
   );
@@ -420,19 +396,31 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="space-y-5">
       <div className="glass-panel p-5">
-        <h2 className="mb-1 font-semibold text-lg">Pre-treatment Prime Check</h2>
+        <h2 className="mb-1 font-semibold text-lg">{t("deviceLab.prime.title", "Pre-treatment Prime Check")}</h2>
         <p className="text-xs text-muted mb-4">
-          Before starting an online-HDF session on the 5008S, confirm which of
-          the following items must be verified. Select <strong>Yes</strong> or{" "}
-          <strong>No</strong> for each.
+          {t(
+            "deviceLab.prime.subtitle",
+            "Before starting an online-HDF session on the 5008S, confirm which of the following items must be verified. Select Yes or No for each."
+          )}
         </p>
         <div className="mb-2 inline-flex items-center gap-1.5 rounded-md bg-surface-2 px-2 py-1 text-[11px] text-muted">
-          <ShieldAlert className="h-3.5 w-3.5" /> Educational model — not
-          clinical decision support. Device values IFU-pending.
+          <ShieldAlert className="h-3.5 w-3.5" />{" "}
+          {t(
+            "deviceLab.prime.eduNote",
+            "Educational model — not clinical decision support. Device values IFU-pending."
+          )}
         </div>
 
         <ul className="mt-4 space-y-3">
           {PRIME_ITEMS.map((item) => {
+            const label = t(
+              `deviceLab.prime.item.${item.id}.label`,
+              item.id
+            );
+            const explanation = t(
+              `deviceLab.prime.item.${item.id}.explain`,
+              ""
+            );
             const answer = selections[item.id];
             const isAnswered = answer !== undefined;
             const isCorrect = answer === item.correct;
@@ -449,7 +437,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
                     : "border-red-400/40 bg-red-400/10",
                 ].join(" ")}
               >
-                <p className="text-sm font-medium leading-snug">{item.label}</p>
+                <p className="text-sm font-medium leading-snug">{label}</p>
                 <div className="mt-3 flex gap-2">
                   <button
                     type="button"
@@ -466,7 +454,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
                     ].join(" ")}
                     onClick={() => toggle(item.id, true)}
                   >
-                    Yes — required
+                    {t("deviceLab.prime.yes", "Yes — required")}
                   </button>
                   <button
                     type="button"
@@ -483,7 +471,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
                     ].join(" ")}
                     onClick={() => toggle(item.id, false)}
                   >
-                    No — not required
+                    {t("deviceLab.prime.no", "No — not required")}
                   </button>
                 </div>
                 {submitted && (
@@ -500,7 +488,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
                     ) : (
                       <XCircle className="mt-0.5 h-3.5 w-3.5 shrink-0 text-red-400" />
                     )}
-                    <span>{item.explanation}</span>
+                    <span>{explanation}</span>
                   </div>
                 )}
               </li>
@@ -516,17 +504,17 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
               disabled={!allAnswered}
               onClick={handleSubmit}
             >
-              Check answers
+              {t("deviceLab.prime.check", "Check answers")}
             </button>
           ) : (
             <div className="flex items-center gap-3">
               {allCorrect ? (
                 <span className="flex items-center gap-1.5 text-emerald-400 text-sm font-medium">
-                  <CheckCircle2 className="h-4 w-4" /> All checks correct
+                  <CheckCircle2 className="h-4 w-4" /> {t("deviceLab.prime.allCorrect", "All checks correct")}
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-amber-400 text-sm font-medium">
-                  <AlertTriangle className="h-4 w-4" /> Review the explanations above
+                  <AlertTriangle className="h-4 w-4" /> {t("deviceLab.prime.review", "Review the explanations above")}
                 </span>
               )}
               <button
@@ -534,7 +522,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
                 className="btn btn-primary gap-1.5"
                 onClick={onNext}
               >
-                Continue to Prescribe <ChevronRight className="h-4 w-4" />
+                {t("deviceLab.prime.continue", "Continue to Prescribe")} <ChevronRight className="h-4 w-4" />
               </button>
             </div>
           )}
@@ -546,6 +534,7 @@ function PrimeStep({ onNext }: { onNext: () => void }) {
 
 // ─── Prescribe step ───────────────────────────────────────────────────────
 function PrescribeStep({ onNext }: { onNext: () => void }) {
+  const { t } = useLang();
   const [volume, setVolume] = useState(0);
   const passed = volume >= VOLUME_TARGET;
   const pct = Math.min(100, Math.round((volume / VOLUME_TARGET) * 100));
@@ -553,20 +542,19 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
   return (
     <div className="space-y-5">
       <div className="glass-panel p-5">
-        <h2 className="mb-1 font-semibold text-lg">Prescribe Convective Volume</h2>
+        <h2 className="mb-1 font-semibold text-lg">{t("deviceLab.prescribe.title", "Prescribe Convective Volume")}</h2>
         <p className="text-xs text-muted mb-1">
-          High-volume HDF requires ≥23 L convective volume per session to deliver
-          the outcome benefit seen in the CONVINCE trial. Use the controls below
-          to build the prescription. (Educational approximation — values IFU-pending.)
+          {t(
+            "deviceLab.prescribe.subtitle",
+            "High-volume HDF requires ≥23 L convective volume per session to deliver the outcome benefit seen in the CONVINCE trial. Use the controls below to build the prescription. (Educational approximation — values IFU-pending.)"
+          )}
         </p>
         <div className="mt-2 mb-5 inline-flex items-center gap-1.5 rounded-md bg-surface-2 px-2 py-1 text-[11px] text-muted">
-          <ShieldAlert className="h-3.5 w-3.5" /> Educational model — not
-          clinical decision support.
+          <ShieldAlert className="h-3.5 w-3.5" /> {t("common.eduModel", "Educational model — not clinical decision support.")}
         </div>
 
-        {/* Target vs actual display */}
         <div className="mb-2 flex items-end justify-between text-sm">
-          <span className="font-medium">Convective volume</span>
+          <span className="font-medium">{t("deviceLab.prescribe.convVol", "Convective volume")}</span>
           <span
             className={[
               "font-mono text-lg font-bold tabular-nums transition-colors",
@@ -575,7 +563,7 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
           >
             {volume} L
             <span className="ml-1 text-xs font-normal text-muted">
-              / ≥{VOLUME_TARGET} L target
+              {t("deviceLab.prescribe.targetSuffix", "/ ≥{n} L target").replace("{n}", String(VOLUME_TARGET))}
             </span>
           </span>
         </div>
@@ -605,21 +593,22 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
 
         {passed && (
           <p className="mt-3 flex items-center gap-1.5 text-sm text-emerald-400 font-medium">
-            <CheckCircle2 className="h-4 w-4" /> ≥23 L reached — high-volume
-            HDF prescription gate passed.
+            <CheckCircle2 className="h-4 w-4" />{" "}
+            {t("deviceLab.prescribe.passedNote", "≥23 L reached — high-volume HDF prescription gate passed.")}
           </p>
         )}
         {!passed && (
           <p className="mt-3 text-xs text-muted">
-            {VOLUME_TARGET - volume} L still needed to reach the ≥23 L
-            high-volume threshold.
+            {t("deviceLab.prescribe.neededNote", "{n} L still needed to reach the ≥23 L high-volume threshold.").replace(
+              "{n}",
+              String(VOLUME_TARGET - volume)
+            )}
           </p>
         )}
 
-        {/* Convection controls */}
         <div className="mt-5 space-y-3">
           <p className="text-xs text-muted font-medium uppercase tracking-wide">
-            Adjust prescription
+            {t("deviceLab.prescribe.adjust", "Adjust prescription")}
           </p>
           <div className="flex flex-wrap gap-2">
             <button
@@ -627,7 +616,7 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
               className="btn btn-primary text-xs"
               onClick={() => setVolume((v) => v + VOLUME_STEP)}
             >
-              +{VOLUME_STEP} L bolus
+              {t("deviceLab.prescribe.bolus", "+{n} L bolus").replace("{n}", String(VOLUME_STEP))}
             </button>
             <button
               type="button"
@@ -635,7 +624,7 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
               onClick={() => setVolume((v) => Math.max(0, v - VOLUME_STEP))}
               disabled={volume === 0}
             >
-              −{VOLUME_STEP} L
+              {t("deviceLab.prescribe.minus", "−{n} L").replace("{n}", String(VOLUME_STEP))}
             </button>
             <button
               type="button"
@@ -643,12 +632,14 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
               onClick={() => setVolume(0)}
               disabled={volume === 0}
             >
-              Reset
+              {t("deviceLab.prescribe.reset", "Reset")}
             </button>
           </div>
           <p className="text-[11px] text-muted">
-            Each step represents one substitution bolus increment (educational
-            approximation; not a clinical dose calculator).
+            {t(
+              "deviceLab.prescribe.stepNote",
+              "Each step represents one substitution bolus increment (educational approximation; not a clinical dose calculator)."
+            )}
           </p>
         </div>
 
@@ -659,7 +650,7 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
             disabled={!passed}
             onClick={onNext}
           >
-            Continue to Alarms <ChevronRight className="h-4 w-4" />
+            {t("deviceLab.prescribe.continue", "Continue to Alarms")} <ChevronRight className="h-4 w-4" />
           </button>
         </div>
       </div>
@@ -669,6 +660,7 @@ function PrescribeStep({ onNext }: { onNext: () => void }) {
 
 // ─── Alarms step ─────────────────────────────────────────────────────────
 function AlarmsStep({ onNext }: { onNext: () => void }) {
+  const { t } = useLang();
   const [selected, setSelected] = useState<string | null>(null);
   const chosen = selected ? ALARM_OPTIONS.find((o) => o.id === selected) : null;
 
@@ -677,24 +669,25 @@ function AlarmsStep({ onNext }: { onNext: () => void }) {
       <div className="glass-panel p-5">
         <div className="mb-1 flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-amber-400" />
-          <h2 className="font-semibold text-lg">TMP Alarm Scenario</h2>
+          <h2 className="font-semibold text-lg">{t("deviceLab.alarms.title", "TMP Alarm Scenario")}</h2>
         </div>
         <p className="text-xs text-muted mb-4 leading-relaxed">
-          During an online-HDF session on the 5008S, a{" "}
-          <strong className="text-amber-300">
-            Transmembrane Pressure (TMP) High alarm
-          </strong>{" "}
-          sounds. The alarm is audible and the TMP reading has climbed above the
-          set limit within the last 2 minutes. The patient is stable. What is
-          your first response?
+          {t(
+            "deviceLab.alarms.body",
+            "During an online-HDF session on the 5008S, a Transmembrane Pressure (TMP) High alarm sounds. The alarm is audible and the TMP reading has climbed above the set limit within the last 2 minutes. The patient is stable. What is your first response?"
+          )}
         </p>
         <div className="mb-4 inline-flex items-center gap-1.5 rounded-md bg-surface-2 px-2 py-1 text-[11px] text-muted">
-          <ShieldAlert className="h-3.5 w-3.5" /> Educational scenario —
-          clinical protocols may vary by site. IFU-pending.
+          <ShieldAlert className="h-3.5 w-3.5" />{" "}
+          {t(
+            "deviceLab.alarms.eduNote",
+            "Educational scenario — clinical protocols may vary by site. IFU-pending."
+          )}
         </div>
 
         <ul className="space-y-2">
           {ALARM_OPTIONS.map((opt) => {
+            const label = t(`deviceLab.alarms.opt.${opt.id}.label`, opt.id);
             const isSelected = selected === opt.id;
             const revealed = selected !== null;
             const isCorrect = opt.correct;
@@ -719,7 +712,7 @@ function AlarmsStep({ onNext }: { onNext: () => void }) {
                   <span className="mr-2 shrink-0 font-mono opacity-50">
                     {ALARM_OPTIONS.indexOf(opt) + 1}.
                   </span>
-                  {opt.label}
+                  {label}
                 </button>
               </li>
             );
@@ -738,15 +731,17 @@ function AlarmsStep({ onNext }: { onNext: () => void }) {
             <div className="mb-1 flex items-center gap-2 font-semibold">
               {chosen.correct ? (
                 <>
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" /> Correct
+                  <CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t("deviceLab.alarms.correct", "Correct")}
                 </>
               ) : (
                 <>
-                  <XCircle className="h-4 w-4 text-red-400" /> Incorrect
+                  <XCircle className="h-4 w-4 text-red-400" /> {t("deviceLab.alarms.incorrect", "Incorrect")}
                 </>
               )}
             </div>
-            <p className="text-[12px]">{chosen.consequence}</p>
+            <p className="text-[12px]">
+              {t(`deviceLab.alarms.opt.${chosen.id}.conseq`, "")}
+            </p>
           </div>
         )}
 
@@ -757,7 +752,7 @@ function AlarmsStep({ onNext }: { onNext: () => void }) {
               className="btn btn-primary gap-1.5"
               onClick={onNext}
             >
-              Continue to Sign-off <ChevronRight className="h-4 w-4" />
+              {t("deviceLab.alarms.continue", "Continue to Sign-off")} <ChevronRight className="h-4 w-4" />
             </button>
           </div>
         )}
@@ -768,35 +763,42 @@ function AlarmsStep({ onNext }: { onNext: () => void }) {
 
 // ─── Sign-off step ────────────────────────────────────────────────────────
 function SignoffStep({ onComplete }: { onComplete: () => void }) {
+  const { t } = useLang();
   const [confirmed, setConfirmed] = useState(false);
+  const signoffItems = [
+    "deviceLab.signoff.item1",
+    "deviceLab.signoff.item2",
+    "deviceLab.signoff.item3",
+    "deviceLab.signoff.item4",
+  ] as const;
+  const signoffFallback: Record<(typeof signoffItems)[number], string> = {
+    "deviceLab.signoff.item1": "Explored the 5008S CorDiax 3D model and compared it to the legacy 4008S",
+    "deviceLab.signoff.item2": "Confirmed the DIASAFE®plus ultrafilter and online substitution-fluid line requirements",
+    "deviceLab.signoff.item3": "Reached the ≥23 L convective volume prescription threshold",
+    "deviceLab.signoff.item4": "Responded correctly to a TMP High alarm scenario",
+  };
 
   return (
     <div className="space-y-5">
       <div className="glass-panel p-5">
         <div className="mb-1 flex items-center gap-2">
           <BadgeCheck className="h-5 w-5 text-flow" />
-          <h2 className="font-semibold text-lg">Device Lab Sign-off</h2>
+          <h2 className="font-semibold text-lg">{t("deviceLab.signoff.title", "Device Lab Sign-off")}</h2>
         </div>
         <p className="text-sm text-muted mb-6 leading-relaxed">
-          You have completed the guided Device Lab sequence:
+          {t("deviceLab.signoff.body", "You have completed the guided Device Lab sequence:")}
         </p>
         <ul className="mb-6 space-y-2 text-sm">
-          {[
-            "Explored the 5008S CorDiax 3D model and compared it to the legacy 4008S",
-            "Confirmed the DIASAFE®plus ultrafilter and online substitution-fluid line requirements",
-            "Reached the ≥23 L convective volume prescription threshold",
-            "Responded correctly to a TMP High alarm scenario",
-          ].map((item) => (
-            <li key={item} className="flex items-start gap-2 text-muted">
+          {signoffItems.map((key) => (
+            <li key={key} className="flex items-start gap-2 text-muted">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" />
-              <span>{item}</span>
+              <span>{t(key, signoffFallback[key])}</span>
             </li>
           ))}
         </ul>
 
         <div className="mb-4 inline-flex items-center gap-1.5 rounded-md bg-surface-2 px-2 py-1 text-[11px] text-muted">
-          <ShieldAlert className="h-3.5 w-3.5" /> Educational model — not
-          clinical decision support. Values IFU-pending.
+          <ShieldAlert className="h-3.5 w-3.5" /> {t("common.eduModel", "Educational model — not clinical decision support.")}
         </div>
 
         {!confirmed ? (
@@ -810,9 +812,10 @@ function SignoffStep({ onComplete }: { onComplete: () => void }) {
                 }}
               />
               <span className="text-sm">
-                I confirm that I have reviewed this educational module as an HCP
-                in a learning context. I understand this is not clinical guidance
-                and all device values are IFU-pending.
+                {t(
+                  "deviceLab.signoff.confirm",
+                  "I confirm that I have reviewed this educational module as an HCP in a learning context. I understand this is not clinical guidance and all device values are IFU-pending."
+                )}
               </span>
             </label>
           </div>
@@ -820,14 +823,14 @@ function SignoffStep({ onComplete }: { onComplete: () => void }) {
           <div className="mt-4 flex flex-col items-start gap-4 sm:flex-row sm:items-center">
             <div className="flex items-center gap-2 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 font-medium">
               <BadgeCheck className="h-5 w-5 text-emerald-400" />
-              Device Lab mastered — C3 gate complete
+              {t("deviceLab.signoff.mastered", "Device Lab mastered — C3 gate complete")}
             </div>
             <button
               type="button"
               className="btn btn-primary gap-1.5"
               onClick={onComplete}
             >
-              Record completion <CheckCircle2 className="h-4 w-4" />
+              {t("deviceLab.signoff.record", "Record completion")} <CheckCircle2 className="h-4 w-4" />
             </button>
           </div>
         )}
@@ -931,8 +934,10 @@ function DeviceConfiguratorInner() {
       {mastered && (
         <div className="flex items-center gap-3 rounded-xl border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300 font-medium">
           <BadgeCheck className="h-5 w-5 text-emerald-400 shrink-0" />
-          Device Lab mastered — C3 gate recorded. You can revisit any section
-          using the controls above.
+          {t(
+            "deviceLab.mastered.banner",
+            "Device Lab mastered — C3 gate recorded. You can revisit any section using the controls above."
+          )}
         </div>
       )}
 
@@ -967,9 +972,14 @@ function DeviceConfiguratorInner() {
   );
 }
 
+function DevicesLoading() {
+  const { t } = useLang();
+  return <div className="text-muted">{t("deviceLab.loading", "Loading configurator…")}</div>;
+}
+
 export default function DevicesPage() {
   return (
-    <Suspense fallback={<div className="text-muted">Loading configurator…</div>}>
+    <Suspense fallback={<DevicesLoading />}>
       <DeviceConfiguratorInner />
     </Suspense>
   );

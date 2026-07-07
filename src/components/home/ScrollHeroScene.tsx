@@ -16,6 +16,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { useLang } from "@/components/providers/LanguageProvider";
 
 // Beat boundaries mirror the original spec (0/25/50/75/100%, ~4% crossfade) so motion-hero.md's
 // timeline stays valid.
@@ -135,12 +136,13 @@ function CircuitIllustration({ draw }: { draw: MotionValue<number> }) {
 
 // ── Beat 3 — monitor vitals card (DOM overlay, matches Monitor5008 field layout) ────────────────
 function MonitorCard() {
+  const { t } = useLang();
   return (
     <div className="rounded-xl border-2 border-gray-700 bg-gray-900 p-1 shadow-2xl">
       <div className="w-[280px] rounded-lg bg-black px-3.5 py-3 font-mono text-[10px]">
         <div className="mb-2 flex items-center justify-between border-b border-gray-700 pb-1.5">
-          <span className="text-flow">5008 CorDiax</span>
-          <span className="calm-pulse text-green-400">● TREATMENT</span>
+          <span className="text-flow">{t("heroScene.monitor.5008", "5008 CorDiax")}</span>
+          <span className="calm-pulse text-green-400">{t("heroScene.monitor.treatment", "● TREATMENT")}</span>
         </div>
         <div className="grid grid-cols-3 gap-1.5">
           {MONITOR_FIELDS.map(([label, value]) => (
@@ -158,6 +160,7 @@ function MonitorCard() {
 }
 
 export default function ScrollHeroScene({ isReturning = false }: { isReturning?: boolean }) {
+  const { t } = useLang();
   const containerRef = useRef<HTMLDivElement>(null);
   // pin ≈ 280vh over ["start start", "end end"] — matches D5's ScrollControls pages={2.8}
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ["start start", "end end"] });
@@ -228,12 +231,25 @@ export default function ScrollHeroScene({ isReturning = false }: { isReturning?:
           </motion.svg>
           <motion.div style={{ y: headlineY }} className="max-w-sm space-y-2">
             <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-              Your dialysis unit, <span className="grad-text">simulated</span>.
+              {(() => {
+                const full = t("heroScene.beat1.title", "Your dialysis unit, simulated.");
+                const parts = full.split("simulated");
+                if (parts.length === 2) {
+                  return (
+                    <>
+                      {parts[0]}
+                      <span className="grad-text">simulated</span>
+                      {parts[1]}
+                    </>
+                  );
+                }
+                return full;
+              })()}
             </h2>
             <div className="flex flex-col items-center gap-1.5">
-              <span className="badge badge-flow">Who are you here as?</span>
+              <span className="badge badge-flow">{t("heroScene.beat1.hint", "Who are you here as?")}</span>
               <span className="rounded-full border border-white/15 bg-black/30 px-2.5 py-1 text-[10px] text-muted whitespace-nowrap">
-                e.g. In-center nurse
+                {t("heroScene.beat1.example", "e.g. In-center nurse")}
               </span>
             </div>
           </motion.div>
@@ -271,12 +287,29 @@ export default function ScrollHeroScene({ isReturning = false }: { isReturning?:
             <div className="absolute inset-y-0 left-0 rounded-full bg-[var(--color-flow)]" style={{ width: "82%" }} />
             <span className="absolute top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-[#8FE05A]" style={{ left: "82%" }} />
           </div>
-          <span className="text-[10px] text-muted">≥ 23 L convection · CONVINCE, PMID 37326323</span>
+          <span className="text-[10px] text-muted">{t("heroScene.evidence.conv", "≥ 23 L convection · CONVINCE, PMID 37326323")}</span>
           <h1 className="max-w-md font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-            The first interactive <span className="grad-text">HDF training</span> built for your unit
+            {(() => {
+              const full = t("home.return.h1", "The first interactive HDF training built for your dialysis unit");
+              const parts = full.split("HDF training");
+              if (parts.length === 2) {
+                return (
+                  <>
+                    {parts[0]}
+                    <span className="grad-text">HDF training</span>
+                    {parts[1]}
+                  </>
+                );
+              }
+              return full;
+            })()}
           </h1>
-          <span className="btn btn-primary">Start your path</span>
-          {isReturning && <span className="text-[10px] text-muted">Replay first impression anytime below</span>}
+          <span className="btn btn-primary">{t("home.return.cta.start", "Start your path")}</span>
+          {isReturning && (
+            <span className="text-[10px] text-muted">
+              {t("heroScene.beat4.replay", "Replay first impression anytime below")}
+            </span>
+          )}
         </motion.div>
       </div>
     </div>

@@ -154,6 +154,7 @@ function SliderControl({
       </div>
       <input
         type="range"
+        aria-label={label}
         min={min}
         max={max}
         value={value}

@@ -25,7 +25,7 @@ export function Monitor5008() {
         <div className="rounded-2xl border-4 border-gray-700 bg-gray-900 p-1 shadow-2xl">
           <div className="rounded-xl bg-black p-4 min-h-[320px] font-mono text-sm">
             <div className="flex justify-between border-b border-gray-700 pb-2 mb-4">
-              <span className="text-teal-400">5008 CorDiax</span>
+              <span className="text-flow">5008 CorDiax</span>
               <span className={cn(out.alarm ? "text-red-500 alarm-pulse" : "text-green-400")}>
                 {out.alarm ? `⚠ ${out.alarm}` : "● TREATMENT"}
               </span>

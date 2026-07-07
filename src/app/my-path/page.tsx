@@ -47,7 +47,14 @@ const KT_BG: Record<KnowledgeType, string> = {
   conditional: "bg-gold",
 };
 
-const STATE_LABEL = ["Not started", "Started", "Competent", "Proficient", "Mastered"] as const;
+const STATE_KEYS = [
+  "myPath.state.notStarted",
+  "myPath.state.started",
+  "myPath.state.competent",
+  "myPath.state.proficient",
+  "myPath.state.mastered",
+] as const;
+const STATE_FALLBACK = ["Not started", "Started", "Competent", "Proficient", "Mastered"] as const;
 
 const ROLE_LS_KEY = "raouf.role";
 
@@ -143,7 +150,7 @@ export default function MyPathPage() {
           {placementDone ? (
             <div className="flex items-center gap-1.5 text-[10px] text-muted">
               <MapPin className="h-3 w-3 text-teal" />
-              {t("placement.done", "Placement done — starting points set")}
+              {t("myPath.placement.done", "Placement done — starting points set")}
             </div>
           ) : (
             <Link
@@ -151,7 +158,7 @@ export default function MyPathPage() {
               className="inline-flex items-center gap-1.5 rounded-lg bg-accent/10 px-3 py-1.5 text-xs font-medium text-accent transition-colors hover:bg-accent/20"
             >
               <Compass className="h-3.5 w-3.5" />
-              {t("placement.cta", "Take the 4-min placement → start at your level")}
+              {t("myPath.placement.cta", "Take the 4-min placement → start at your level")}
             </Link>
           )}
         </div>
@@ -293,7 +300,10 @@ function CompetencyRow({
               </span>
               {c.demoBuild !== "real" && (
                 <span className="rounded bg-surface-2 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted">
-                  {c.demoBuild === "panel" ? "panel" : "preview"}
+                  {t(
+                    c.demoBuild === "panel" ? "myPath.badge.panel" : "myPath.badge.preview",
+                    c.demoBuild === "panel" ? "panel" : "preview"
+                  )}
                 </span>
               )}
             </div>
@@ -305,7 +315,7 @@ function CompetencyRow({
           {/* Right: level vs target */}
           <div className="sm:w-44 sm:shrink-0">
             <div className="flex items-center justify-between text-[11px] text-muted">
-              <span>{STATE_LABEL[lv]}</span>
+              <span>{t(STATE_KEYS[lv], STATE_FALLBACK[lv])}</span>
               <span className="tabular-nums">
                 L{lv}/{target}
               </span>

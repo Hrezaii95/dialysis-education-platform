@@ -206,6 +206,14 @@ html.light .badge { background: rgba(15, 23, 42, 0.03); }
   50% { opacity: 0.72; }
 }
 
+/* Landing scroll hero — Beat 2 blood-pump accent: continuous "living" detail, not scroll-driven
+   (motion-hero.md, revised abstract-motion approach). Calm rhythm, matches .calm-pulse cadence. */
+.hero-pump-accent { transform-box: fill-box; transform-origin: center; animation: hero-pump-accent 1.6s ease-in-out infinite; }
+@keyframes hero-pump-accent {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+
 :focus-visible { outline: 2px solid #8FE05A; outline-offset: 2px; }
 html.light :focus-visible { outline-color: #10306B; }
 

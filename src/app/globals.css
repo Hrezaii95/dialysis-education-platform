@@ -9,36 +9,78 @@
    these — only the VALUES change (navy voice, lime signal).
    Fonts: decision D3 — system stack only, no CDN, no next/font.
    ============================================================ */
-:root {
-  --canvas: #0B1E45;        /* navy-900 */
+/* Dark theme (default) — synced to design-preview/tokens.css semantic tier */
+:root,
+html.dark,
+[data-theme="dark"] {
+  /* primitives (never themed) */
+  --rca-navy-900: #0B1E45;
+  --rca-navy-800: #112A5E;
+  --rca-navy-700: #10306B;
+  --rca-navy-600: #1A3A78;
+  --rca-mist: #E8ECEF;
+  --rca-cloud: #EEF2F5;
+  --rca-ink: #0F141A;
+  --rca-slate: #55616E;
+  --rca-gray: #8A95A1;
+  --rca-fog: #9FB0C8;
+  --rca-fog-dim: #7E90AB;
+  --rca-lime-500: #6CCB3E;
+  --rca-lime-400: #8FE05A;
+  --rca-danger: #DA4A54;
+  --rca-success: #2E8E54;
+  --rca-warning: #E39A3B;
+
+  /* semantic — dark */
+  --canvas: var(--rca-navy-900);
+  --surface: var(--rca-navy-800);
   --surface-0: #0D2350;
-  --surface-1: #112A5E;     /* navy-800 */
+  --surface-1: var(--rca-navy-800);
   --surface-2: #16336B;
-  --surface-3: #1A3A78;     /* navy-600 */
+  --surface-3: var(--rca-navy-600);
+  --surface-sub: rgba(255, 255, 255, 0.07);
+  --surface-elevated: rgba(255, 255, 255, 0.10);
   --hairline: rgba(255, 255, 255, 0.08);
   --hairline-strong: rgba(255, 255, 255, 0.26);
+  --text-primary: #F2F5FA;
+  --text: var(--text-primary);
+  --text-muted: var(--rca-fog);
+  --text-faint: var(--rca-fog-dim);
+  --primary: #FFFFFF;
+  --on-primary: var(--rca-navy-700);
+  --border: var(--hairline);
+  --scrim: rgba(11, 30, 69, 0.72);
+  --chip-overlay: rgba(255, 255, 255, 0.08);
 
-  --flow: #9BC0F2;          /* blue-200 — links/emphasis (teal retired) */
+  --flow: #9BC0F2;
   --flow-hover: #BCD5F2;
-  --accent: #9BC0F2;        /* alias → flow (legacy components) */
+  --accent: #9BC0F2;
   --accent-hover: #BCD5F2;
-  --raouf-blue: #5D8AD4;    /* device / brand data-blue */
-  --teal: #9BC0F2;          /* legacy alias, same value as --flow */
-  --gold: #E39A3B;          /* evidence / CONVINCE (brand warning hue) */
+  --raouf-blue: #5D8AD4;
+  --teal: #9BC0F2;
+  --gold: #E39A3B;
   --violet: #7FA9E8;
-  --signal: #8FE05A;        /* lime — live/verified/passing ONLY, never decoration */
+  --signal: var(--rca-lime-400);
+  --danger: var(--rca-danger);
+  --success: var(--rca-success);
+  --warning: var(--rca-warning);
 
-  --text: #F2F5FA;
-  --text-muted: #9FB0C8;
-  --danger: #DA4A54;
-  --success: #2E8E54;
-  --warning: #E39A3B;
-
-  /* Pulse-R mark accents — logo + link-hover ONLY, never UI chrome */
   --ring-blue: #1C75BC;
   --pulse-green: #35C98E;
 
-  /* fonts — system stack; slot names kept for a future brand woff2 */
+  /* clinical monitor — flips in light (not always black box) */
+  --monitor-frame: #3d5168;
+  --monitor-screen-bg: radial-gradient(circle at 50% 42%, var(--rca-navy-600) 0%, #142F63 46%, #0F2650 100%);
+  --monitor-field: rgba(255, 255, 255, 0.06);
+  --monitor-label: var(--rca-fog-dim);
+  --monitor-value: var(--text-primary);
+  --monitor-border: rgba(255, 255, 255, 0.12);
+  --monitor-trend: rgba(255, 255, 255, 0.04);
+  --monitor-stage-bg: var(--monitor-screen-bg);
+  --alarm-bg: rgba(218, 74, 84, 0.14);
+  --alarm-border: 1px solid rgba(218, 74, 84, 0.45);
+  --alarm-ink: #F4B9BE;
+
   --font-geist-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
   --font-instrument: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, system-ui, sans-serif;
   --font-fa: Tahoma, "Segoe UI", system-ui, sans-serif;
@@ -61,6 +103,7 @@
   --color-danger: var(--danger);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-hairline: var(--hairline);
   --font-sans: var(--font-geist-sans);
   --font-display: var(--font-instrument);
 }
@@ -120,15 +163,15 @@ body {
   min-height: 44px;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-/* Brand CTA — ALWAYS white-on-navy(dark) / navy-on-white(light). Fixes the legacy 2.2:1 teal-CTA AA failure. */
+/* Brand CTA — white-on-navy (dark) / navy-on-white (light) per Pulse-R tokens */
 .btn-primary {
-  background: #FFFFFF;
-  color: #10306B;
+  background: var(--primary);
+  color: var(--on-primary);
   box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.5);
 }
 .btn-primary:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.6); }
 .btn-primary:active:not(:disabled) { transform: translateY(0); }
-.btn-ghost { background: rgba(255, 255, 255, 0.03); border-color: var(--hairline); color: var(--text); }
+.btn-ghost { background: var(--surface-sub); border-color: var(--hairline); color: var(--text); }
 .btn-ghost:hover:not(:disabled) { background: var(--surface-2); border-color: var(--hairline-strong); }
 
 .badge {
@@ -148,25 +191,47 @@ body {
 /* Farsi / RTL: swap to Vazirmatn when the fa class is set on <html> */
 html.font-fa body { font-family: var(--font-fa), var(--font-geist-sans), system-ui, sans-serif; }
 
-/* ===== Light theme (persistent toggle, like language) ===== */
-html.light {
-  --canvas: #E8ECEF;        /* mist */
+/* ===== Light theme (html.light + data-theme="light") ===== */
+html.light,
+[data-theme="light"] {
+  --canvas: var(--rca-mist);
+  --surface: #FFFFFF;
   --surface-0: #FFFFFF;
   --surface-1: #FFFFFF;
-  --surface-2: #EEF2F5;     /* cloud */
-  --surface-3: #E8ECEF;
+  --surface-2: var(--rca-cloud);
+  --surface-3: var(--rca-mist);
+  --surface-sub: var(--rca-cloud);
+  --surface-elevated: #FFFFFF;
   --hairline: rgba(15, 20, 26, 0.07);
   --hairline-strong: rgba(15, 20, 26, 0.22);
-  --text: #0F141A;          /* ink */
-  --text-muted: #55616E;    /* slate */
-  --flow: #10306B;          /* navy-700 accent on light */
-  --accent: #10306B;
-  --teal: #10306B;
-  --raouf-blue: #10306B;
-  --gold: #8A5B12;          /* warning-ink — AA fix (2.08:1 → >4.5:1) */
-  --signal: #6CCB3E;
+  --text-primary: var(--rca-ink);
+  --text: var(--text-primary);
+  --text-muted: var(--rca-slate);
+  --text-faint: var(--rca-gray);
+  --primary: var(--rca-navy-700);
+  --on-primary: #FFFFFF;
+  --border: var(--hairline);
+  --scrim: rgba(15, 20, 26, 0.45);
+  --chip-overlay: rgba(15, 20, 26, 0.06);
+  --flow: var(--rca-navy-700);
+  --accent: var(--rca-navy-700);
+  --teal: var(--rca-navy-700);
+  --raouf-blue: var(--rca-navy-700);
+  --gold: #8A5B12;
+  --signal: var(--rca-lime-500);
+
+  --monitor-frame: #94a3b8;
+  --monitor-screen-bg: radial-gradient(circle at 50% 42%, #FFFFFF 0%, #F2F6F8 46%, #E9EEF2 100%);
+  --monitor-field: rgba(15, 20, 26, 0.05);
+  --monitor-label: var(--rca-gray);
+  --monitor-value: var(--rca-ink);
+  --monitor-border: rgba(15, 20, 26, 0.12);
+  --monitor-trend: rgba(15, 20, 26, 0.04);
+  --monitor-stage-bg: var(--monitor-screen-bg);
+  --alarm-bg: rgba(218, 74, 84, 0.10);
+  --alarm-border: 1px solid rgba(218, 74, 84, 0.35);
+  --alarm-ink: #A32832;
 }
-html.light .btn-primary { background: #10306B; color: #FFFFFF; }
 html.light .mesh-bg {
   background:
     radial-gradient(58% 48% at 12% -6%, rgba(143, 224, 90, 0.07), transparent 70%),
@@ -214,8 +279,49 @@ html.light .badge { background: rgba(15, 23, 42, 0.03); }
   50% { transform: scale(1.4); opacity: 1; }
 }
 
-:focus-visible { outline: 2px solid #8FE05A; outline-offset: 2px; }
-html.light :focus-visible { outline-color: #10306B; }
+:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+html.light :focus-visible { outline-color: var(--rca-navy-700); }
+
+/* Clinical monitor shell — theme-aware (replaces hardcoded bg-black / gray-900) */
+.monitor-bezel {
+  border: 4px solid var(--monitor-frame);
+  background: color-mix(in srgb, var(--monitor-frame) 35%, var(--surface-1));
+  border-radius: 1rem;
+  padding: 4px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+}
+.monitor-screen {
+  background: var(--monitor-screen-bg);
+  border-radius: 0.75rem;
+  color: var(--monitor-value);
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+.monitor-field {
+  background: var(--monitor-field);
+  border-radius: 0.25rem;
+  padding: 0.5rem;
+}
+.monitor-field-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--monitor-label);
+}
+.monitor-field-value {
+  font-variant-numeric: tabular-nums;
+  color: var(--monitor-value);
+}
+.monitor-divider { border-color: var(--monitor-border); }
+.monitor-trend { background: var(--monitor-trend); }
+.overlay-scrim { background: var(--scrim); }
+.chip-overlay {
+  border: 1px solid var(--hairline);
+  background: var(--chip-overlay);
+}
+.legend-overlay {
+  border: 1px solid var(--hairline);
+  background: color-mix(in srgb, var(--surface-1) 75%, transparent);
+  backdrop-filter: blur(12px);
+}
 
 @media (max-width: 768px) {
   input[type="range"] { min-height: 28px; }

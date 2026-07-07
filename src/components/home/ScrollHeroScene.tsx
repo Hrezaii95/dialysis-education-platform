@@ -17,6 +17,7 @@
 import { useRef } from "react";
 import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { useLang } from "@/components/providers/LanguageProvider";
+import { cn } from "@/lib/utils";
 
 // Beat boundaries mirror the original spec (0/25/50/75/100%, ~4% crossfade) so motion-hero.md's
 // timeline stays valid.
@@ -138,17 +139,17 @@ function CircuitIllustration({ draw }: { draw: MotionValue<number> }) {
 function MonitorCard() {
   const { t } = useLang();
   return (
-    <div className="rounded-xl border-2 border-gray-700 bg-gray-900 p-1 shadow-2xl">
-      <div className="w-[280px] rounded-lg bg-black px-3.5 py-3 font-mono text-[10px]">
-        <div className="mb-2 flex items-center justify-between border-b border-gray-700 pb-1.5">
+    <div className="monitor-bezel shadow-2xl">
+      <div className="monitor-screen w-[280px] px-3.5 py-3 text-[10px]">
+        <div className="mb-2 flex items-center justify-between border-b monitor-divider pb-1.5">
           <span className="text-flow">{t("heroScene.monitor.5008", "5008 CorDiax")}</span>
-          <span className="calm-pulse text-green-400">{t("heroScene.monitor.treatment", "● TREATMENT")}</span>
+          <span className="calm-pulse text-success">{t("heroScene.monitor.treatment", "● TREATMENT")}</span>
         </div>
         <div className="grid grid-cols-3 gap-1.5">
           {MONITOR_FIELDS.map(([label, value]) => (
-            <div key={label} className="rounded bg-gray-800/60 px-1.5 py-1">
-              <div className="text-[7px] uppercase text-gray-500">{label}</div>
-              <div className={label === "TMP" ? "calm-pulse tabular-nums text-gray-100" : "tabular-nums text-gray-100"}>
+            <div key={label} className="monitor-field px-1.5 py-1">
+              <div className="monitor-field-label text-[7px]">{label}</div>
+              <div className={cn("monitor-field-value text-[10px]", label === "TMP" && "calm-pulse")}>
                 {value}
               </div>
             </div>
@@ -248,7 +249,7 @@ export default function ScrollHeroScene({ isReturning = false }: { isReturning?:
             </h2>
             <div className="flex flex-col items-center gap-1.5">
               <span className="badge badge-flow">{t("heroScene.beat1.hint", "Who are you here as?")}</span>
-              <span className="rounded-full border border-white/15 bg-black/30 px-2.5 py-1 text-[10px] text-muted whitespace-nowrap">
+              <span className="chip-overlay rounded-full px-2.5 py-1 text-[10px] text-muted whitespace-nowrap">
                 {t("heroScene.beat1.example", "e.g. In-center nurse")}
               </span>
             </div>
@@ -278,7 +279,7 @@ export default function ScrollHeroScene({ isReturning = false }: { isReturning?:
         >
           <div className="flex items-center gap-1.5">
             {["CONTRAST", "ESHOL", "CONVINCE"].map((name) => (
-              <span key={name} className="rounded-full border border-white/15 bg-black/30 px-2 py-0.5 text-[9px] font-medium text-muted">
+              <span key={name} className="chip-overlay rounded-full px-2 py-0.5 text-[9px] font-medium text-muted">
                 {name}
               </span>
             ))}

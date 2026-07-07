@@ -63,7 +63,7 @@ function HollowFiberDialyzer({ color, convective }: { color: string; convective:
         </mesh>
       ))}
       <Html position={[0, -0.85, 0]} center>
-        <span className="rounded bg-black/80 px-2 py-0.5 text-[10px] text-white whitespace-nowrap">
+        <span className="rounded px-2 py-0.5 text-[10px] text-text whitespace-nowrap" style={{ background: "var(--surface-elevated)" }}>
           Dialyzer cartridge
         </span>
       </Html>

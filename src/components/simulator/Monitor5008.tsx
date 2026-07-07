@@ -22,11 +22,11 @@ export function Monitor5008() {
   return (
     <div className="grid gap-6 lg:grid-cols-5">
       <div className="lg:col-span-3">
-        <div className="rounded-2xl border-4 border-gray-700 bg-gray-900 p-1 shadow-2xl">
-          <div className="rounded-xl bg-black p-4 min-h-[320px] font-mono text-sm">
-            <div className="flex justify-between border-b border-gray-700 pb-2 mb-4">
+        <div className="monitor-bezel shadow-2xl">
+          <div className="monitor-screen p-4 min-h-[320px] text-sm">
+            <div className="flex justify-between border-b monitor-divider pb-2 mb-4">
               <span className="text-flow">5008 CorDiax</span>
-              <span className={cn(out.alarm ? "text-red-500 alarm-pulse" : "text-green-400")}>
+              <span className={cn(out.alarm ? "text-danger alarm-pulse" : "text-success")}>
                 {out.alarm ? `⚠ ${out.alarm}` : "● TREATMENT"}
               </span>
             </div>
@@ -43,12 +43,12 @@ export function Monitor5008() {
               <ScreenField label="UF rate" value="8 mL/min" />
             </div>
 
-            <div className="mt-6 h-24 rounded bg-gray-800/50 p-2 relative overflow-hidden">
-              <div className="text-[10px] text-gray-500 mb-1">TMP trend (educational)</div>
+            <div className="mt-6 h-24 rounded monitor-trend p-2 relative overflow-hidden">
+              <div className="text-[10px] text-muted mb-1">TMP trend (educational)</div>
               <svg viewBox="0 0 300 60" className="w-full h-16">
                 <polyline
                   fill="none"
-                  stroke="#5e6ad2"
+                  stroke="var(--raouf-blue)"
                   strokeWidth="2"
                   points={Array.from({ length: 20 }, (_, i) => {
                     const x = i * 15;
@@ -60,7 +60,10 @@ export function Monitor5008() {
             </div>
 
             {out.alarm && (
-              <div className="mt-4 rounded bg-red-900/80 border border-red-500 p-3 text-red-200 text-center font-bold">
+              <div
+                className="mt-4 rounded p-3 text-center font-bold"
+                style={{ background: "var(--alarm-bg)", border: "var(--alarm-border)", color: "var(--alarm-ink)" }}
+              >
                 ALARM — {out.alarm.replace(/_/g, " ")}
               </div>
             )}
@@ -125,9 +128,9 @@ function ScreenField({
   alert?: boolean;
 }) {
   return (
-    <div className={cn("rounded bg-gray-800/60 p-2", alert && "ring-1 ring-red-500")}>
-      <div className="text-[9px] text-gray-500 uppercase">{label}</div>
-      <div className={cn("tabular-nums", alert ? "text-red-400" : "text-gray-100")}>{value}</div>
+    <div className={cn("monitor-field", alert && "ring-1 ring-danger")}>
+      <div className="monitor-field-label">{label}</div>
+      <div className={cn("monitor-field-value", alert && "text-danger")}>{value}</div>
     </div>
   );
 }

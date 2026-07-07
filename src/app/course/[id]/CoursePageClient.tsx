@@ -175,7 +175,7 @@ export default function CoursePageClient() {
       {/* mobile drawer */}
       {drawer && (
         <div className="fixed inset-0 z-[60] lg:hidden">
-          <div className="absolute inset-0 bg-black/60" onClick={() => setDrawer(false)} aria-hidden />
+          <div className="absolute inset-0 overlay-scrim" onClick={() => setDrawer(false)} aria-hidden />
           <div className="absolute left-0 top-0 h-full w-[82%] max-w-xs overflow-y-auto border-r border-white/10 bg-surface-1 p-3">
             <div className="mb-2 flex items-center justify-between">
               <div className="text-sm font-semibold">Course outline</div>

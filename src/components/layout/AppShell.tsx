@@ -43,7 +43,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
       <div className="mesh-bg" aria-hidden />
-      <header className="sticky top-0 z-50 border-b border-white/8 bg-canvas/80 backdrop-blur-xl">
+      <header className="sticky top-0 z-50 border-b border-hairline bg-canvas/80 backdrop-blur-xl">
         <div className="mx-auto flex h-12 sm:h-14 max-w-7xl items-center justify-between gap-2 px-3 sm:px-4">
           <Link href="/" className="flex min-w-0 items-center" aria-label="Raouf Renal Academy — home">
             <Logo />
@@ -56,7 +56,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   "flex items-center gap-1.5 rounded-lg px-2 xl:px-3 py-1.5 text-xs font-medium transition-colors",
                   pathname === href || (href !== "/" && pathname.startsWith(href))
-                    ? "bg-accent/20 text-white"
+                    ? "bg-accent text-canvas"
                     : "text-muted hover:bg-surface-2 hover:text-text"
                 )}
               >

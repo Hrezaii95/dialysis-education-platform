@@ -48,7 +48,7 @@ export function CommandPalette({ open, onOpenChange }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-start justify-center bg-black/60 p-3 sm:p-4 pt-[10vh] sm:pt-[15vh] backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex items-start justify-center overlay-scrim p-3 sm:p-4 pt-[10vh] sm:pt-[15vh] backdrop-blur-sm">
       <Command
         className="w-full max-w-lg max-h-[85dvh] overflow-hidden rounded-xl border border-white/10 bg-surface-1 shadow-2xl flex flex-col"
         label="Command palette"

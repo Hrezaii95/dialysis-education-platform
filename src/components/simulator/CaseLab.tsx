@@ -8,10 +8,12 @@ import { usePlatformStore } from "@/lib/store";
 import { emitStatement } from "@/lib/xapi";
 import { CASES } from "@/lib/cases";
 import { DebriefPanel } from "./DebriefPanel";
-import { CasePhaseStepper, DecisionCard, VitalsMonitor } from "./PatientCaseUI";
+import { CasePhaseStepper, DecisionCard, VitalsMonitor, CASE_LAB_PHASES } from "./PatientCaseUI";
+import { IDHCaseJourney } from "./IDHCaseJourney";
 import { cn } from "@/lib/utils";
 import { withBasePath } from "@/lib/asset";
-import { FileText, Stethoscope, Lock } from "lucide-react";
+import { FileText, Stethoscope, Lock, Check } from "lucide-react";
+import { useLang } from "@/components/providers/LanguageProvider";
 
 interface Patient {
   id: string;
@@ -23,6 +25,7 @@ interface Patient {
   vitals: Record<string, string>;
   learning_objectives: string[];
   build?: "real" | "stub";
+  hero?: boolean;
 }
 
 // Map the 4 locked cases.ts entries into the Patient shape that CaseLab needs.
@@ -43,13 +46,15 @@ function mergeCasesWithPatients(jsonPatients: Patient[]): Patient[] {
       vitals: json?.vitals ?? {},
       learning_objectives: json?.learning_objectives ?? [],
       build: c.build,
+      hero: c.hero,
     };
   });
 }
 
 export function CaseLab() {
+  const { t } = useLang();
   const [patients, setPatients] = useState<Patient[]>([]);
-  const [selectedId, setSelectedId] = useState("idh");
+  const [selectedId, setSelectedId] = useState("idh"); // Mr. K (complete) default
 
   useEffect(() => {
     fetch(withBasePath("/data/patients.json"))
@@ -63,52 +68,79 @@ export function CaseLab() {
   };
 
   if (!patients.length) {
-    return <div className="text-muted">Loading cases…</div>;
+    return <div className="text-muted">{t("sim.loading", "Loading simulator…")}</div>;
   }
+
+  const selected = patients.find((p) => p.id === selectedId) ?? patients[0];
 
   return (
     <div className="space-y-4">
       <p className="text-sm text-muted">
-        Four intradialytic-complication cases (competency C5). Case 1 is fully interactive;
-        Cases 2–4 show the clinical presentation and first decision point — full branching in the production build.
+        {t(
+          "cases.subtitle",
+          "The patient deteriorates in response to your decisions. Each branch has a consequence and a cited debrief — not a quiz with a clinical skin."
+        )}
       </p>
       <div className="grid gap-4 lg:grid-cols-4">
+        {/* Case list — stacks horizontally on mobile, vertically on desktop */}
         <div className="space-y-2 lg:col-span-1">
-          <h3 className="font-semibold text-xs text-muted uppercase tracking-wider">Case panel</h3>
-          <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible scrollbar-none">
-          {patients.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              onClick={() => selectPatient(p.id)}
-              className={cn(
-                "shrink-0 w-[min(75vw,240px)] lg:w-full text-left rounded-xl border p-3 transition-all",
-                selectedId === p.id ? "border-accent bg-accent/10" : "border-white/8 hover:bg-surface-2"
-              )}
-            >
-              <div className="flex items-center gap-2">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-surface-2 text-xs font-bold">
-                  {p.avatar}
-                </span>
-                <div>
-                  <div className="font-medium text-sm flex items-center gap-1">
-                    {p.name}
-                    {p.build === "stub" && (
-                      <Lock className="h-3 w-3 text-muted" aria-label="Preview stub" />
-                    )}
+          <h3 className="font-semibold text-xs text-muted uppercase tracking-wider">
+            {t("cases.allCases", "All cases")}
+          </h3>
+          <div className="flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible scrollbar-none -mx-1 px-1">
+            {patients.map((p) => {
+              const isActive = selectedId === p.id;
+              const isComplete = p.build === "real";
+              return (
+                <button
+                  key={p.id}
+                  type="button"
+                  onClick={() => selectPatient(p.id)}
+                  aria-pressed={isActive}
+                  className={cn(
+                    "shrink-0 w-[min(78vw,260px)] lg:w-full min-h-[44px] text-left rounded-xl border p-3 transition-all",
+                    isActive
+                      ? "border-accent bg-accent/10 ring-1 ring-accent/40"
+                      : "border-[var(--hairline)] hover:bg-surface-2",
+                    isComplete && !isActive && "border-[var(--signal)]/40"
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={cn(
+                        "flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold",
+                        isComplete ? "bg-[var(--signal)]/15 text-[var(--signal)]" : "bg-surface-2 text-muted"
+                      )}
+                    >
+                      {p.avatar}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-medium text-sm flex items-center gap-1.5 truncate">
+                        <span className="truncate">{p.name}</span>
+                        {isComplete ? (
+                          <Check className="h-3.5 w-3.5 shrink-0 text-[var(--signal)]" aria-label={t("cases.fullCase", "Full case")} />
+                        ) : (
+                          <Lock className="h-3 w-3 shrink-0 text-muted" aria-label={t("cases.locked", "Preview")} />
+                        )}
+                      </div>
+                      <div className="text-[10px] text-muted">
+                        {isComplete ? t("cases.interactive", "Interactive") : t("cases.locked", "Preview")}
+                      </div>
+                    </div>
                   </div>
-                  <div className="text-[10px] text-muted">
-                    {p.build === "stub" ? "preview" : "interactive"}
-                  </div>
-                </div>
-              </div>
-            </button>
-          ))}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        <div className="lg:col-span-3">
-          <CaseLabSession key={selectedId} patientId={selectedId} patients={patients} />
+        {/* Case content — Mr. K (real) gets the full journey; stubs get the preview */}
+        <div className="lg:col-span-3 min-w-0">
+          {selected.build === "real" ? (
+            <IDHCaseJourney key={selected.id} />
+          ) : (
+            <CaseLabSession key={selected.id} patientId={selected.id} patients={patients} />
+          )}
         </div>
       </div>
     </div>
@@ -116,6 +148,7 @@ export function CaseLab() {
 }
 
 function CaseLabSession({ patientId, patients }: { patientId: string; patients: Patient[] }) {
+  const { t } = useLang();
   const addCaseDecision = usePlatformStore((s) => s.addCaseDecision);
   const [state, send] = useMachine(caseMachine, { input: { patientId } });
   const patient = patients.find((p) => p.id === patientId)!;
@@ -145,7 +178,7 @@ function CaseLabSession({ patientId, patients }: { patientId: string; patients: 
             </div>
           </div>
           {dp1 && (
-            <div className="border-t border-white/8 pt-3 space-y-2">
+            <div className="border-t border-[var(--hairline)] pt-3 space-y-2">
               <div className="text-xs font-medium uppercase text-muted">Decision point 1 — {dp1.at}</div>
               <p className="text-sm font-medium">{dp1.prompt}</p>
               <ul className="text-sm text-muted space-y-1 list-disc list-inside">
@@ -157,12 +190,12 @@ function CaseLabSession({ patientId, patients }: { patientId: string; patients: 
           )}
           <div className="rounded-lg border border-accent/30 bg-accent/5 p-3 text-xs text-muted">
             <Lock className="inline h-3 w-3 mr-1 text-accent" />
-            <strong className="text-foreground">Preview — full interactive case in the production build.</strong>{" "}
+            <strong className="text-text">Preview — full interactive case in the production build.</strong>{" "}
             Full branching (decisions {locked.decisionPoints.length > 1 ? `DP1–DP${locked.decisionPoints.length}` : "DP1"}, vitals timeline, debrief + score) is implemented but locked to this stub.
           </div>
           {locked.debrief && (
-            <div className="text-xs text-muted italic border-t border-white/8 pt-3">
-              <span className="font-medium text-foreground not-italic">Debrief preview: </span>{locked.debrief}
+            <div className="text-xs text-muted italic border-t border-[var(--hairline)] pt-3">
+              <span className="font-medium text-text not-italic">Debrief preview: </span>{locked.debrief}
             </div>
           )}
         </div>
@@ -181,7 +214,7 @@ function CaseLabSession({ patientId, patients }: { patientId: string; patients: 
 
   return (
     <div className="space-y-4">
-      <CasePhaseStepper current={phase} />
+      <CasePhaseStepper current={phase} phases={[...CASE_LAB_PHASES]} />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4 order-2 lg:order-1">
@@ -331,11 +364,11 @@ function CaseLabSession({ patientId, patients }: { patientId: string; patients: 
 
           <div className="glass-panel p-4">
             <div className="flex items-center gap-2 text-xs font-medium uppercase text-muted mb-2">
-              <FileText className="h-3.5 w-3.5" /> Chart
+              <FileText className="h-3.5 w-3.5" /> {t("idh.monitor.label", "Chart")}
             </div>
             <dl className="space-y-2 text-xs">
               {Object.entries(patient.vitals).map(([k, v]) => (
-                <div key={k} className="flex justify-between border-b border-white/5 pb-1">
+                <div key={k} className="flex justify-between border-b border-[var(--hairline)] pb-1">
                   <dt className="text-muted capitalize">{k.replace("_", " ")}</dt>
                   <dd className="tabular-nums">{v}</dd>
                 </div>

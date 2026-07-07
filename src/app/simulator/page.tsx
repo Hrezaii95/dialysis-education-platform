@@ -7,7 +7,6 @@ import Link from "next/link";
 import { CircuitSim } from "@/components/simulator/CircuitSim";
 import { Monitor5008 } from "@/components/simulator/Monitor5008";
 import { CaseLab } from "@/components/simulator/CaseLab";
-import { IDHSimCase } from "@/components/simulator/IDHSimCase";
 import { CourseSim } from "@/components/course/CourseSims";
 import type { WidgetKey } from "@/lib/c1-course";
 import { Cpu, BellRing, ArrowRight, FlaskConical } from "lucide-react";
@@ -95,14 +94,8 @@ function SimulatorContent() {
       {tab === "circuit" && <CircuitSim />}
       {tab === "monitor" && <Monitor5008 />}
       {tab === "cases" && (
-        <div className="space-y-8">
-          <IDHSimCase />
-          <section>
-            <h3 className="mb-3 text-sm font-semibold text-muted">
-              {t("sim.cases.eyebrow", "More scenarios — modality lab")}
-            </h3>
-            <CaseLab />
-          </section>
+        <div className="space-y-6">
+          <CaseLab />
         </div>
       )}
       {tab === "labs" && (

@@ -103,8 +103,8 @@ export const COMPETENCIES: Competency[] = [
     blurb: "String, prime, verify the substitution line + DIASAFE+, run, and clear alarms.",
     knowledge: { declarative: 15, procedural: 80, conditional: 5 },
     primaryType: "procedural",
-    href: "/devices",
-    activities: ["3D Device Lab explore", "Drag-to-sequence setup", "Timed alarm scenarios"],
+    href: "/simulator?step=explore&view=operate",
+    activities: ["3D operate explore", "Prime checklist", "Alarm scenarios"],
     gate: "Demonstrate setup + alarm response (timed)",
     levels: ladder([
       "Name the parts; know the substitution line + DIASAFE+ matter",
@@ -125,7 +125,7 @@ export const COMPETENCIES: Competency[] = [
     blurb: "Set Qb/Qd/time/FF to hit ≥23 L convection; why online-HDF needs ultrapure water.",
     knowledge: { declarative: 35, procedural: 35, conditional: 30 },
     primaryType: "procedural",
-    href: "/simulator?tab=circuit",
+    href: "/simulator?step=explore&view=circuit",
     activities: ["Prescription panel (live convection vs ≥23 L)", "Daily-5: water-quality + Rx"],
     gate: "Prescribe to ≥23 L and state the water-quality floor",
     levels: ladder([
@@ -147,7 +147,7 @@ export const COMPETENCIES: Competency[] = [
     blurb: "Kt/V & adequacy; the four intradialytic complication families and first-moves.",
     knowledge: { declarative: 15, procedural: 25, conditional: 60 },
     primaryType: "conditional",
-    href: "/simulator?tab=cases",
+    href: "/simulator?step=cases",
     activities: ["4 branching patient-case sims", "Emergency mini-sims", "Daily-5"],
     gate: "Stabilize the patient (scored decision path)",
     levels: ladder([

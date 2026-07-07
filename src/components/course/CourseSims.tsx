@@ -168,12 +168,12 @@ function Apply() {
   return (
     <div className="space-y-3">
       <p className="text-sm text-muted">You understand the therapy. Now take it into the rest of the journey:</p>
-      <Link href="/devices" className="flex items-center justify-between gap-3 rounded-xl border border-accent/30 p-3.5 transition-colors hover:border-accent/60">
-        <span className="flex items-center gap-3"><Cpu className="h-5 w-5 text-accent" /><span className="text-sm"><span className="font-medium">Device Lab</span> — operate the 5008 for online-HDF</span></span>
+      <Link href="/simulator" className="flex items-center justify-between gap-3 rounded-xl border border-accent/30 p-3.5 transition-colors hover:border-accent/60">
+        <span className="flex items-center gap-3"><Cpu className="h-5 w-5 text-accent" /><span className="text-sm"><span className="font-medium">Simulation Hub</span> — explore, prime, cases, alarms, sign-off</span></span>
         <ArrowRight className="h-4 w-4 shrink-0 text-muted" />
       </Link>
-      <Link href="/simulator" className="flex items-center justify-between gap-3 rounded-xl border border-accent/30 p-3.5 transition-colors hover:border-accent/60">
-        <span className="flex items-center gap-3"><HeartPulse className="h-5 w-5 text-accent" /><span className="text-sm"><span className="font-medium">Clinical Simulator</span> — decide under a deteriorating patient</span></span>
+      <Link href="/simulator?step=cases" className="flex items-center justify-between gap-3 rounded-xl border border-accent/30 p-3.5 transition-colors hover:border-accent/60">
+        <span className="flex items-center gap-3"><HeartPulse className="h-5 w-5 text-accent" /><span className="text-sm"><span className="font-medium">Patient Cases</span> — decide under a deteriorating patient</span></span>
         <ArrowRight className="h-4 w-4 shrink-0 text-muted" />
       </Link>
     </div>

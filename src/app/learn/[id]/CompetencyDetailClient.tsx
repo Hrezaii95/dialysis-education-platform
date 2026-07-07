@@ -20,15 +20,30 @@ import {
   FlaskConical,
 } from "lucide-react";
 
+import { hubHref } from "@/lib/simulation-hub";
+
 function surfaceLabel(href: string): string {
-  if (href.startsWith("/devices")) return "Device Lab";
-  if (href.startsWith("/simulator")) return "Clinical Simulator";
+  if (href.startsWith("/simulator") || href.startsWith("/devices") || href.startsWith("/alarms"))
+    return "Simulation Hub";
   if (href.startsWith("/convince")) return "Evidence & Outcomes";
   if (href.startsWith("/flipbook")) return "Flipbook";
   return "Practice";
 }
 
-const C3_FLOW = ["Explore", "Prime", "Prescribe ≥23 L", "Alarms", "Sign-off"];
+const HUB_FLOW = ["Explore", "Prime", "Patient Cases", "Alarms", "Sign-off"];
+
+function simHrefForCompetency(id: string): string {
+  switch (id) {
+    case "c3":
+      return hubHref("explore", "operate");
+    case "c4":
+      return hubHref("explore", "circuit");
+    case "c5":
+      return hubHref("cases");
+    default:
+      return hubHref();
+  }
+}
 
 function Stage({
   n,
@@ -69,8 +84,7 @@ function Stage({
 export default function CompetencyDetailClient() {
   const params = useParams();
   const id = String(params.id);
-  const simHref =
-    id === "c3" ? "/devices" : id === "c5" ? "/simulator?tab=cases" : id === "c4" ? "/simulator?tab=circuit" : "/simulator";
+  const simHref = simHrefForCompetency(id);
   const c = COMPETENCIES.find((x) => x.id === id);
   const { t } = useLang();
   const course = getCourse(id);
@@ -173,18 +187,18 @@ export default function CompetencyDetailClient() {
 
       {/* ② SIMULATE / PRACTICE */}
       <Stage n={2} title={t("learn.stageSimulate", "Simulate — practice what you learned")}>
-        {id === "c3" && (
+        {(id === "c3" || id === "c4" || id === "c5") && (
           <div className="mb-3 flex flex-wrap items-center gap-1.5">
-            {C3_FLOW.map((s, i) => (
+            {HUB_FLOW.map((s, i) => (
               <span key={s} className="flex items-center gap-1.5">
                 <span
                   className={`rounded-md px-2 py-1 text-[11px] ${
-                    i === C3_FLOW.length - 1 ? "bg-accent/20 text-accent" : "bg-surface-2 text-muted"
+                    i === HUB_FLOW.length - 1 ? "bg-accent/20 text-accent" : "bg-surface-2 text-muted"
                   }`}
                 >
                   {i + 1}. {s}
                 </span>
-                {i < C3_FLOW.length - 1 && <ArrowRight className="h-3 w-3 text-muted" />}
+                {i < HUB_FLOW.length - 1 && <ArrowRight className="h-3 w-3 text-muted" />}
               </span>
             ))}
           </div>

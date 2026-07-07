@@ -8,7 +8,7 @@ import { ClientProviders } from "@/components/providers/ClientProviders";
 // which keeps the same CSS variable names as slots for a future brand woff2.
 
 export const metadata: Metadata = {
-  title: "Raouf Clinical Simulator | Tier-1 HDF Academy",
+  title: "Raouf Simulation Hub | Tier-1 HDF Academy",
   description:
     "Fresenius-grade HDF clinical simulator — manipulate circuits, master the 5008, respond to alarms, earn credentials.",
   icons: {

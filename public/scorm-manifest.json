@@ -1,14 +1,14 @@
 {
   "version": "SCORM 1.2",
   "identifier": "hdf-clinical-simulator",
-  "title": "HDF Clinical Simulator",
-  "description": "Tier-1 HDF training — circuit sim, monitor, cases, alarms, credential",
+  "title": "HDF Simulation Hub",
+  "description": "Tier-1 HDF training — unified Simulation Hub: explore, prime, cases, alarms, credential",
   "modules": [
     { "id": "foundation", "href": "/flipbook", "masteryRequired": true },
-    { "id": "circuit", "href": "/simulator?tab=circuit", "masteryRequired": true },
-    { "id": "monitor", "href": "/simulator?tab=monitor", "masteryRequired": true },
-    { "id": "cases", "href": "/simulator?tab=cases", "masteryRequired": true },
-    { "id": "alarms", "href": "/alarms", "masteryRequired": true },
+    { "id": "circuit", "href": "/simulator?step=explore&view=circuit", "masteryRequired": true },
+    { "id": "monitor", "href": "/simulator?step=explore&view=monitor", "masteryRequired": true },
+    { "id": "cases", "href": "/simulator?step=cases", "masteryRequired": true },
+    { "id": "alarms", "href": "/simulator?step=alarms", "masteryRequired": true },
     { "id": "convince", "href": "/convince", "masteryRequired": false },
     { "id": "credential", "href": "/assessment", "masteryRequired": true, "passingScore": 75 }
   ],

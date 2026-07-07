@@ -25,7 +25,7 @@ export function StepNav<T extends string>({
   const currentIdx = steps.findIndex((s) => s.id === current);
 
   return (
-    <nav aria-label={t("flow.stepNav.label", "Guided steps")} className={cn("flex flex-wrap items-center gap-1.5", className)}>
+    <nav aria-label={t("flow.stepNav.label", "Guided steps")} className={cn("flex items-center gap-1.5 overflow-x-auto scrollbar-none", className)}>
       {steps.map((step, i) => {
         const isActive = step.id === current;
         const isDone = completed.has(step.id as T);
@@ -40,7 +40,7 @@ export function StepNav<T extends string>({
               disabled={!isReachable}
               onClick={() => isReachable && onStepSelect(step.id as T)}
               className={cn(
-                "inline-flex min-h-[36px] items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
+                "inline-flex min-h-[36px] shrink-0 items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flow/60",
                 "disabled:cursor-not-allowed disabled:opacity-50",
                 isActive

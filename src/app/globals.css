@@ -198,6 +198,14 @@ html.light .badge { background: rgba(15, 23, 42, 0.03); }
 .wiggle-hint { animation: wiggle 2s ease-in-out infinite; }
 @keyframes wiggle { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-3deg); } 75% { transform: rotate(3deg); } }
 
+/* Calm vitals pulse — "monitored / alive", not alarm (motion-hero.md Beat 3). Slower + lower
+   amplitude than .alarm-pulse; signal color only. */
+.calm-pulse { animation: calm-pulse 2.4s ease-in-out infinite; }
+@keyframes calm-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.72; }
+}
+
 :focus-visible { outline: 2px solid #8FE05A; outline-offset: 2px; }
 html.light :focus-visible { outline-color: #10306B; }
 

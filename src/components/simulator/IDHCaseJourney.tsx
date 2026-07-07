@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import {
   Stethoscope,
@@ -24,7 +23,6 @@ import {
   type MonitorTone,
   type MonitorVital,
 } from "./PatientCaseUI";
-import { FlowFooter } from "@/components/flow/FlowFooter";
 
 // Full 5-step journey for Mr. K (Case 1, IDH) — the only COMPLETE case.
 // Sources decision points (DP1–DP3), debrief text, and PMID citations from
@@ -323,31 +321,16 @@ export function IDHCaseJourney() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-3">
-                <Link href="/learn/c5" className="btn btn-primary inline-flex min-h-[44px] gap-1.5">
-                  {t("flow.footer.continueToHub", "Continue to competency hub")}
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <button
-                  type="button"
-                  onClick={reset}
-                  className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-[var(--hairline)] px-3 py-2 text-sm text-muted hover:text-text"
-                >
-                  <RotateCcw className="h-4 w-4" /> {t("idh.journey.restart", "Restart case")}
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={reset}
+                className="inline-flex min-h-[44px] items-center gap-1.5 rounded-lg border border-[var(--hairline)] px-3 py-2 text-sm text-muted hover:text-text"
+              >
+                <RotateCcw className="h-4 w-4" /> {t("idh.journey.restart", "Restart case")}
+              </button>
             </div>
           )}
 
-          {phase !== "assess" && phase !== "debrief" && (
-            <FlowFooter
-              onBack={() => {
-                const idx = PHASE_SEQ.indexOf(phase);
-                if (idx > 0) goTo(PHASE_SEQ[idx - 1]);
-              }}
-              showContinue={false}
-            />
-          )}
         </div>
 
         {/* Right: live themed monitor + trajectory */}

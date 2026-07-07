@@ -1,10 +1,8 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Brand roll-out (S4 → client-demo completion, 2026-07-07).
-   Palette re-pointed to the Locked Pulse-R identity
-   (design-preview/tokens.css + tools/brand/brand-bridge.css,
-   POC verified a11y-safe in design-handoff/audits/S4-a11y-scan.md).
+   Brand roll-out (S4 → v3 restoration, 2026-07-07).
+   Palette from design-preview/tokens.css v3 (Pack A + Pack B merge).
    Same token NAMES as before — every component already consumes
    these — only the VALUES change (navy voice, lime signal).
    Fonts: decision D3 — system stack only, no CDN, no next/font.

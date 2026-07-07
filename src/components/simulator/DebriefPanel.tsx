@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import type { SimOutputs } from "@/lib/sim-engine/physics";
 import { usePlatformStore } from "@/lib/store";
+import { useLang } from "@/components/providers/LanguageProvider";
 
 interface Props {
   patientName: string;
@@ -14,6 +17,7 @@ interface Props {
 export function DebriefPanel({ patientName, decisions, physics, objectives }: Props) {
   const [debrief, setDebrief] = useState<string | null>(null);
   const setSkill = usePlatformStore((s) => s.setSkill);
+  const { t } = useLang();
 
   const buildDebrief = () =>
     `Case debrief for ${patientName}:\n\nYour decisions: ${decisions.join(" → ")}\n\nEducational outcomes — clearance index ${physics.clearanceIndex.toFixed(0)}, QoL index ${physics.qolIndex.toFixed(0)}. ${physics.mechanism}\n\nLearning objectives addressed: ${objectives.join("; ")}.\n\nEducational model only — not clinical advice.`;
@@ -39,12 +43,18 @@ export function DebriefPanel({ patientName, decisions, physics, objectives }: Pr
 
       {!debrief ? (
         <button type="button" className="btn btn-primary" onClick={handleViewDebrief}>
-          See educator feedback
+          {t("cases.debrief.viewFeedback", "See educator feedback")}
         </button>
       ) : (
-        <div className="rounded-lg border border-accent/30 bg-accent/5 p-4 text-sm whitespace-pre-wrap leading-relaxed">
-          {debrief}
-        </div>
+        <>
+          <div className="rounded-lg border border-accent/30 bg-accent/5 p-4 text-sm whitespace-pre-wrap leading-relaxed">
+            {debrief}
+          </div>
+          <Link href="/learn/c5" className="btn btn-primary inline-flex gap-1.5">
+            {t("flow.footer.continueToHub", "Continue to C5 hub")}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </>
       )}
     </div>
   );

@@ -1,10 +1,9 @@
 "use client";
 
-import { Suspense, useCallback, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { motion } from "framer-motion";
 import { usePlatformStore } from "@/lib/store";
 import { emitStatement } from "@/lib/xapi";
 import {
@@ -22,6 +21,9 @@ import {
   BadgeCheck,
 } from "lucide-react";
 import { useLang } from "@/components/providers/LanguageProvider";
+import { StepNav } from "@/components/flow/StepNav";
+import { FlowFooter } from "@/components/flow/FlowFooter";
+import { useFlowNavigation } from "@/hooks/useFlowNavigation";
 
 const Canvas = dynamic(
   () => import("@react-three/fiber").then((m) => m.Canvas),
@@ -108,6 +110,12 @@ const STEP_I18N: Record<StepKey, string> = {
   signoff: "deviceLab.step.gate",
 };
 
+const DEVICE_FLOW_STEPS = STEP_KEYS.map((id) => ({
+  id,
+  label: STEP_LABELS[id],
+  labelKey: STEP_I18N[id],
+}));
+
 // --- Prime step: checklist items (labels via i18n in component) ---
 interface PrimeItem {
   id: "diasafe" | "onlineLine" | "rinseback";
@@ -136,57 +144,7 @@ const ALARM_OPTIONS: AlarmOption[] = [
 const VOLUME_STEP = 4; // L per bolus
 const VOLUME_TARGET = 23; // ≥23 L to pass
 
-// ─── Step rail component ───────────────────────────────────────────────────
-function StepRail({
-  current,
-  completed,
-  onStepSelect,
-}: {
-  current: StepKey;
-  completed: Set<StepKey>;
-  onStepSelect: (step: StepKey) => void;
-}) {
-  const { t } = useLang();
-  return (
-    <nav
-      aria-label="Guided steps"
-      className="flex flex-wrap items-center gap-1.5"
-    >
-      {STEP_KEYS.map((key, i) => {
-        const isDone = completed.has(key);
-        const isActive = key === current;
-        return (
-          <span key={key} className="flex items-center gap-1.5">
-            <button
-              type="button"
-              aria-current={isActive ? "step" : undefined}
-              onClick={() => onStepSelect(key)}
-              className={[
-                "inline-flex items-center gap-1 rounded-md px-2 py-1 text-[11px] font-medium transition-colors",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-flow/60",
-                isActive
-                  ? "bg-flow/20 text-flow ring-1 ring-flow/40"
-                  : isDone
-                  ? "bg-emerald-500/15 text-emerald-400 hover:bg-emerald-500/25"
-                  : "bg-surface-2 text-muted hover:bg-surface-2/80 hover:text-foreground",
-              ].join(" ")}
-            >
-              {isDone && !isActive && (
-                <CheckCircle2 className="h-3 w-3 text-emerald-400" />
-              )}
-              {i + 1}. {t(STEP_I18N[key], STEP_LABELS[key])}
-            </button>
-            {i < STEP_KEYS.length - 1 && (
-              <ArrowRight className="h-3 w-3 shrink-0 text-muted" aria-hidden="true" />
-            )}
-          </span>
-        );
-      })}
-    </nav>
-  );
-}
-
-// ─── Explore step ─────────────────────────────────────────────────────────
+// --- convective volume simulation ---
 function ExploreStep({
   system,
   dialyzer,
@@ -228,7 +186,7 @@ function ExploreStep({
             </Canvas>
           </div>
           {/* on-canvas legend */}
-          <div className="pointer-events-none absolute left-4 top-4 hidden rounded-xl border border-white/10 bg-black/40 p-3 backdrop-blur-md sm:block">
+          <div className="pointer-events-none absolute left-4 top-4 hidden rounded-xl legend-overlay p-3 sm:block">
             <div className="mb-1.5 flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-muted">
               <Rotate3d className="h-3 w-3" /> {t("deviceLab.dragRotate", "Drag to rotate")}
             </div>
@@ -852,34 +810,34 @@ function DeviceConfiguratorInner() {
   const setSkill = usePlatformStore((s) => s.setSkill);
   const { t } = useLang();
 
-  // guided step state
-  const [currentStep, setCurrentStep] = useState<StepKey>("explore");
-  const [completedSteps, setCompletedSteps] = useState<Set<StepKey>>(new Set());
+  const flow = useFlowNavigation<StepKey>({
+    steps: STEP_KEYS,
+    initial: "explore",
+    completeRoute: "/learn/c3",
+  });
+  const { current: currentStep, completed: completedSteps, goTo: goToStep, back: flowBack, isFirst, setCompleted: setCompletedSteps } = flow;
   const [mastered, setMastered] = useState(false);
 
-  const advanceTo = useCallback((next: StepKey) => {
-    setCompletedSteps((prev) => {
-      const s = new Set(prev);
-      // mark the step being left as complete
-      const idx = STEP_KEYS.indexOf(next);
-      if (idx > 0) s.add(STEP_KEYS[idx - 1]);
-      return s;
-    });
-    setCurrentStep(next);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
-  const goToStep = useCallback((step: StepKey) => {
-    setCurrentStep(step);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+  const advanceTo = useCallback(
+    (next: StepKey) => {
+      setCompletedSteps((prev) => {
+        const s = new Set(prev);
+        const idx = STEP_KEYS.indexOf(next);
+        if (idx > 0) s.add(STEP_KEYS[idx - 1]);
+        return s;
+      });
+      goToStep(next);
+    },
+    [goToStep, setCompletedSteps]
+  );
 
   const handleComplete = useCallback(() => {
     setCompletedSteps(new Set(STEP_KEYS));
     setMastered(true);
     setSkill("devices", "mastered", 100);
     emitStatement("completed", "device-lab", "C3 gate — devices mastered");
-  }, [setSkill]);
+    router.push("/learn/c3");
+  }, [router, setCompletedSteps, setSkill]);
 
   // URL-driven config (for Explore step)
   const systemId = params.get("system") || "5008s";
@@ -937,10 +895,12 @@ function DeviceConfiguratorInner() {
 
         {/* Step rail */}
         <div className="mt-4">
-          <StepRail
+          <StepNav
+            steps={DEVICE_FLOW_STEPS}
             current={currentStep}
             completed={completedSteps}
             onStepSelect={goToStep}
+            allowSkipAhead
           />
         </div>
       </header>
@@ -982,6 +942,10 @@ function DeviceConfiguratorInner() {
       )}
       {currentStep === "signoff" && (
         <SignoffStep onComplete={handleComplete} />
+      )}
+
+      {!isFirst && currentStep !== "signoff" && (
+        <FlowFooter onBack={flowBack} showContinue={false} />
       )}
     </div>
   );
